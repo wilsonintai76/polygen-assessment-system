@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { DashboardLayout } from "./components/DashboardLayout";
-import { BrandingManager } from "./components/BrandingManager";
 import { CourseManager } from "./components/CourseManager";
 import { BankManagement } from "./components/bank/BankManagement";
 import { LibraryView } from "./components/library/LibraryView";
@@ -8,19 +7,17 @@ import { HelpGuide } from "./components/help/HelpGuide";
 import { UserManagement } from "./components/admin/UserManagement";
 import { DepartmentManager } from "./components/admin/DepartmentManager";
 import { ProgrammeManager } from "./components/admin/ProgrammeManager";
-import { GlobalMqfManager } from "./components/admin/GlobalMqfManager";
+import { DublinAccordManager } from "./components/admin/DublinAccordManager";
 import { SessionManager } from "./components/admin/SessionManager";
 import { CISTTemplateManager } from "./components/admin/CISTTemplateManager";
 import { TemplateManager } from "./components/admin/TemplateManager";
 import {
   AssessmentPaper,
   Course,
-  InstitutionalBranding,
   Question,
   User,
   Department,
   Programme,
-  GlobalMqf,
   Session,
   FooterData,
   PaperVersion,
@@ -30,7 +27,7 @@ import {
   DublinAccord,
   AssessmentTemplate,
 } from "./types";
-import { DEFAULT_BRANDING, INITIAL_PAPER_DATA, DEFAULT_TEMPLATE } from "./constants";
+import { INITIAL_PAPER_DATA, DEFAULT_TEMPLATE } from "./constants";
 import { A4Page } from "./components/layout/A4Page";
 import { HeaderTable } from "./components/header/HeaderTable";
 import { MatrixTable } from "./components/matrix/MatrixTable";
@@ -91,7 +88,7 @@ type Step =
   | "users"
   | "departments"
   | "programmes"
-  | "global-mqf"
+  | "global-da"
   | "manage-cist"
   | "manage-templates"
   | "sessions";
@@ -178,8 +175,6 @@ function App() {
   const [user, setUser] = useState<User | undefined>(undefined);
   const [step, setStep] = useState<Step>("dashboard");
 
-  const [branding, setBranding] =
-    useState<InstitutionalBranding>(DEFAULT_BRANDING);
   const [templates, setTemplates] = useState<AssessmentTemplate[]>([DEFAULT_TEMPLATE]);
   const [sessions, setSessions] = useState<Session[]>([]);
   const [courses, setCourses] = useState<Course[]>([]);
@@ -207,8 +202,6 @@ function App() {
   const [taxonomies, setTaxonomies] = useState<Taxonomy[]>([]);
   const [itemTypes, setItemTypes] = useState<ItemType[]>([]);
   const [dublinAccords, setDublinAccords] = useState<DublinAccord[]>([]);
-
-  const [globalMqfs, setGlobalMqfs] = useState<GlobalMqf[]>([]);
 
   const [editMode, setEditMode] = useState(false);
   const [viewScheme, setViewScheme] = useState(false);
@@ -335,7 +328,6 @@ function App() {
       );
 
       const loadPromise = Promise.all([
-        api.branding.get().catch((err: unknown) => { console.error("Branding load error", err); return DEFAULT_BRANDING; }),
         api.sessions.list().catch((err: unknown) => { console.error("Sessions load error", err); return []; }),
         api.courses.list().catch((err: unknown) => { console.error("Courses load error", err); return []; }),
         api.questions.list().catch((err: unknown) => { console.error("Questions load error", err); return []; }),
@@ -346,7 +338,6 @@ function App() {
         api.lookup.taxonomies().catch((err: unknown) => { console.error("Taxonomies load error", err); return []; }),
         api.lookup.itemTypes().catch((err: unknown) => { console.error("ItemTypes load error", err); return []; }),
         api.lookup.dublinAccords().catch((err: unknown) => { console.error("DublinAccords load error", err); return []; }),
-        api.lookup.globalMqfs().catch((err: unknown) => { console.error("GlobalMqfs load error", err); return []; }),
         api.templates.list().catch((err: unknown) => { console.error("Templates load error", err); return [DEFAULT_TEMPLATE]; }),
       ]);
 
@@ -354,7 +345,6 @@ function App() {
       const result = await Promise.race([loadPromise, timeoutPromise]);
       console.log("Initialization result:", result);
       const [
-        brandingData,
         sessionsData,
         coursesData,
         questionsData,
@@ -365,10 +355,8 @@ function App() {
         taxData,
         typesData,
         accordsData,
-        globalMqfsData,
         templatesData,
       ] = result as [
-        InstitutionalBranding,
         Session[],
         Course[],
         Question[],
@@ -379,12 +367,10 @@ function App() {
         Taxonomy[],
         ItemType[],
         DublinAccord[],
-        GlobalMqf[],
         AssessmentTemplate[],
       ];
       console.log("CoursesData:", coursesData);
 
-      if (brandingData) setBranding(brandingData);
       if (sessionsData) setSessions(sessionsData);
       if (coursesData) setCourses(coursesData);
       if (questionsData) setCustomBank(questionsData);
@@ -395,7 +381,6 @@ function App() {
       if (taxData) setTaxonomies(taxData);
       if (typesData) setItemTypes(typesData);
       setDublinAccords(accordsData);
-      setGlobalMqfs(globalMqfsData);
       if (templatesData && templatesData.length > 0) {
         setTemplates(templatesData);
       } else {
@@ -611,26 +596,7 @@ function App() {
           />
         );
       case "branding":
-        return (
-          <BrandingManager
-            branding={branding}
-            onUpdate={(b) => {
-              console.log("App.tsx onUpdate called with:", b);
-              api.branding.update(b).then((updated) => {
-                console.log("API update successful:", updated);
-                setBranding(updated);
-                showToast("Branding updated successfully!", "Institutional Branding");
-              }).catch((err) => {
-                console.error("API update failed:", err);
-                showToast("Failed to update branding. Please try again.", "Error");
-              });
-            }}
-            onUploadLogo={async (file) => {
-              const url = await api.storage.uploadLogo(file);
-              await api.branding.update({ ...branding, logoUrl: url }).then(setBranding);
-            }}
-          />
-        );
+        return <div>Branding page removed.</div>;
       case "courses":
         return (
           <CourseManager
@@ -638,7 +604,6 @@ function App() {
             courses={courses}
             departments={departments}
             programmes={programmes}
-            globalMqfs={globalMqfs}
             dublinAccords={dublinAccords}
             learningDomains={learningDomains}
             taxonomies={taxonomies}
@@ -684,9 +649,9 @@ function App() {
             onBatchAdd={() => {}}
             currentBank={customBank}
             availableClos={[]}
-            availableMqf={[]}
+            availableDa={[]}
             onAddCLO={() => {}}
-            onAddMQF={() => {}}
+            onAddDa={() => {}}
             availableCourses={courses}
             showToast={showToast}
           />
@@ -711,7 +676,6 @@ function App() {
               instructions={activePaper.instructions}
               questions={activePaper.questions}
               cloDefinitions={activePaper.cloDefinitions || {}}
-              mqfClusters={activePaper.mqfClusters || {}}
               onUpdateHeader={(h) =>
                 setActivePaper({ ...activePaper, header: h })
               }
@@ -726,9 +690,6 @@ function App() {
               }
               onUpdateCLOs={(clos) =>
                 setActivePaper({ ...activePaper, cloDefinitions: clos })
-              }
-              onUpdateMQF={(mqf) =>
-                setActivePaper({ ...activePaper, mqfClusters: mqf })
               }
               availableTemplates={templates}
               templateId={activePaper.templateId || DEFAULT_TEMPLATE.id}
@@ -754,7 +715,7 @@ function App() {
                     courseId: c.id,
                     matrix: c.jsuTemplate || [],
                     cloDefinitions: c.clos,
-                    mqfClusters: c.mqfs,
+                    daClusters: c.da,
                     header: {
                       ...activePaper.header,
                       courseCode: c.code,
@@ -1104,43 +1065,9 @@ function App() {
             showToast={showToast}
           />
         );
-      case "global-mqf":
+      case "global-da":
         return (
-          <GlobalMqfManager
-            attributes={globalMqfs}
-            onUpdate={async (newMqfs) => {
-              // Find deleted
-              const deleted = globalMqfs.filter(
-                (a) => !newMqfs.find((n) => n.id === a.id),
-              );
-              // Find added
-              const added = newMqfs.filter(
-                (n) => !globalMqfs.find((a) => a.id === n.id),
-              );
-              // Find updated
-              const updated = newMqfs.filter((n) => {
-                const old = globalMqfs.find((a) => a.id === n.id);
-                return (
-                  old &&
-                  (old.code !== n.code || old.description !== n.description)
-                );
-              });
-
-              try {
-                for (const d of deleted) await api.lookup.deleteGlobalMqf(d.id);
-                for (const a of added) await api.lookup.saveGlobalMqf(a);
-                for (const u of updated) await api.lookup.saveGlobalMqf(u);
-
-                // Refresh from API to get actual IDs
-                const refreshed = await api.lookup.globalMqfs();
-                setGlobalMqfs(refreshed);
-                showToast("Global MQFs updated successfully!", "Global MQF/DA");
-              } catch (error) {
-                console.error("Failed to update Global MQFs:", error);
-                showToast("Failed to update Global MQFs. Please try again.", "Global MQF/DA");
-                setGlobalMqfs(newMqfs); // Optimistic update fallback
-              }
-            }}
+          <DublinAccordManager
             dublinAccords={dublinAccords}
             onUpdateDublin={async (newAccords) => {
               // Find deleted
@@ -1169,10 +1096,10 @@ function App() {
                 // Refresh from API to get actual IDs
                 const refreshed = await api.lookup.dublinAccords();
                 setDublinAccords(refreshed);
-                showToast("Dublin Accords updated successfully!", "Global MQF/DA");
+                showToast("Dublin Accords updated successfully!", "Dublin Accord Registry");
               } catch (error) {
                 console.error("Failed to update Dublin Accords:", error);
-                showToast("Failed to update Dublin Accords. Please try again.", "Global MQF/DA");
+                showToast("Failed to update Dublin Accords. Please try again.", "Dublin Accord Registry");
                 setDublinAccords(newAccords); // Optimistic update fallback
               }
             }}

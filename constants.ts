@@ -1,5 +1,5 @@
 
-import { AssessmentPaper, InstitutionalBranding, AssessmentTemplate } from './types';
+import { AssessmentPaper, AssessmentTemplate } from './types';
 
 export const DEFAULT_TEMPLATE: AssessmentTemplate = {
   id: 'default-poly-template',
@@ -19,11 +19,6 @@ export const DEFAULT_TEMPLATE: AssessmentTemplate = {
     margins: { top: '15mm', right: '15mm', bottom: '15mm', left: '15mm' }
   },
   isDefault: true
-};
-
-export const DEFAULT_BRANDING: InstitutionalBranding = {
-  institutionName: "POLITEKNIK KUCHING SARAWAK",
-  logoUrl: "https://odzvkxzgoibxxybcocbr.supabase.co/storage/v1/object/public/branding/logopks.png"
 };
 
 export const INITIAL_PAPER_DATA: AssessmentPaper = {

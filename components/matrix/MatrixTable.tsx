@@ -20,7 +20,7 @@ export const MatrixTable: React.FC<MatrixTableProps> = ({ rows }) => {
       <table className="w-full border-collapse text-[9px] leading-tight font-sans">
         <thead>
           <tr className="bg-gray-100 text-center font-bold uppercase border-b border-black">
-            <th className="border-r border-black p-1.5 w-[20%] align-middle">MQF CLUSTER / <br/>DUBLIN ATTRIBUTES</th>
+            <th className="border-r border-black p-1.5 w-[20%] align-middle uppercase">DUBLIN ACCORD ATTRIBUTES</th>
             <th className="border-r border-black p-1.5 w-[10%] align-middle">LEARNING <br/>OUTCOMES</th>
             <th className="border-r border-black p-1.5 w-[15%] align-middle">TOPIC</th>
             <th className="border-r border-black p-1.5 flex-grow align-middle">CONSTRUCT</th>
@@ -33,7 +33,7 @@ export const MatrixTable: React.FC<MatrixTableProps> = ({ rows }) => {
             processedRows.map((row, idx) => (
               <tr key={idx} className="align-top border-b border-black last:border-b-0">
                 <td className="border-r border-black p-1.5 text-left">
-                  {row.mqfCluster || '-'}
+                  {row.daCluster || '-'}
                 </td>
                 <td className="border-r border-black p-1.5 text-center font-bold">
                   {(row.clos || []).join(', ') || 'N/A'}

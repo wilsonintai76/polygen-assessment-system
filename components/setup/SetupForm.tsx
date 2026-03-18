@@ -14,13 +14,11 @@ interface SetupFormProps {
   instructions: string[];
   questions: Question[];
   cloDefinitions: Record<string, string>;
-  mqfClusters: Record<string, string>;
   onUpdateHeader: (h: HeaderData) => void;
   onUpdateStudent: (s: StudentSectionData) => void;
   onUpdateFooter: (f: FooterData) => void;
   onUpdateInstructions: (ins: string[]) => void;
   onUpdateCLOs: (clos: Record<string, string>) => void;
-  onUpdateMQF: (mqf: Record<string, string>) => void;
   onUpdateAssignedReviewer: (id: string) => void;
   onUpdateTemplate: (templateId: string) => void;
   onNext: () => void;

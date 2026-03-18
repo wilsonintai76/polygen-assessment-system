@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { Course, Department, Programme, User, GlobalMqf, LearningDomain, Taxonomy, DublinAccord } from '../types';
+import { Course, Department, Programme, User, LearningDomain, Taxonomy, DublinAccord } from '../types';
 import { CourseEditorModal } from './CourseEditorModal';
 import { SimpleCourseAddModal } from './SimpleCourseAddModal';
 import { CourseCard } from './CourseCard';
@@ -11,7 +11,6 @@ interface CourseManagerProps {
   onDelete: (id: string) => void;
   departments: Department[];
   programmes: Programme[];
-  globalMqfs: GlobalMqf[];
   dublinAccords: DublinAccord[];
   learningDomains: LearningDomain[];
   taxonomies: Taxonomy[];
@@ -21,7 +20,7 @@ interface CourseManagerProps {
 }
 
 export const CourseManager: React.FC<CourseManagerProps> = ({ 
-  courses, onSave, onDelete, departments, programmes, globalMqfs, dublinAccords, learningDomains, taxonomies, user, onManageJsu, showToast 
+  courses, onSave, onDelete, departments, programmes, dublinAccords, learningDomains, taxonomies, user, onManageJsu, showToast 
 }) => {
   const [editingCourse, setEditingCourse] = useState<Course | null>(null);
   const [isAddingNew, setIsAddingNew] = useState(false);
@@ -42,7 +41,7 @@ export const CourseManager: React.FC<CourseManagerProps> = ({
       deptId: partialCourse.deptId || '',
       programmeId: partialCourse.programmeId || '',
       clos: partialCourse.clos || { 'CLO 1': '' },
-      mqfs: partialCourse.mqfs || {},
+      da: partialCourse.da || {},
       topics: partialCourse.topics || [],
       assessmentPolicies: partialCourse.assessmentPolicies || []
     };
@@ -112,7 +111,6 @@ export const CourseManager: React.FC<CourseManagerProps> = ({
           onUpdate={setEditingCourse} 
           departments={departments}
           programmes={programmes}
-          globalMqfs={globalMqfs}
           dublinAccords={dublinAccords}
           learningDomains={learningDomains}
           taxonomies={taxonomies}

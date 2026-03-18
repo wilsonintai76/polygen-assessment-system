@@ -75,9 +75,9 @@ export const convertMatrixToBlueprints = (
 
     const domainId = findDomainId(row.domain || 'Cognitive');
     
-    // Find policy to get mqfMappings
+    // Find policy to get daMappings
     const policy = (course.assessmentPolicies || []).find(p => p.name === task);
-    const mappedCodes = policy ? (course.mqfMappings?.[policy.id] || []) : [];
+    const mappedCodes = policy ? (course.daMappings?.[policy.id] || []) : [];
     
     // Find the first mapped code that matches a Dublin Accord
     const accordId = dublinAccords.find(a => mappedCodes.includes(a.code))?.id || '';

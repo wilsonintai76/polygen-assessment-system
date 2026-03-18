@@ -23,7 +23,7 @@ export const HelpGuide: React.FC = () => {
              </li>
              <li className="flex gap-3 items-start">
                <span className="mt-1 w-2 h-2 rounded-full bg-blue-400 shrink-0"></span>
-               <span><strong>Courses:</strong> Define your courses, CLOs (Course Learning Outcomes), and MQF/Dublin attributes in the Course Registry.</span>
+               <span><strong>Courses:</strong> Define your courses, CLOs (Course Learning Outcomes), and Dublin Accord attributes in the Dublin Accord Registry.</span>
              </li>
              <li className="flex gap-3 items-start">
                <span className="mt-1 w-2 h-2 rounded-full bg-blue-400 shrink-0"></span>

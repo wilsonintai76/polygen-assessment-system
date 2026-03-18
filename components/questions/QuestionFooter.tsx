@@ -2,22 +2,22 @@
 import React from 'react';
 
 interface QuestionFooterProps {
-  mqfCluster?: string; // Legacy
-  mqfKeys?: string[]; // Modern
+  daCluster?: string; // Legacy
+  daKeys?: string[]; // Modern
   taxonomy?: string;
   construct?: string;
   marks: number;
   editMode?: boolean;
-  onUpdate: (data: { mqfKeys?: string[]; taxonomy?: string; marks: number; mqfCluster?: string; construct?: string }) => void;
+  onUpdate: (data: { daKeys?: string[]; taxonomy?: string; marks: number; daCluster?: string; construct?: string }) => void;
   hasSubQuestions?: boolean;
 }
 
-export const QuestionFooter: React.FC<QuestionFooterProps> = ({ mqfCluster, mqfKeys, taxonomy, construct, marks, editMode, onUpdate, hasSubQuestions }) => {
-  const displayMqf = mqfKeys && mqfKeys.length > 0 ? mqfKeys.join(', ') : mqfCluster || "";
+export const QuestionFooter: React.FC<QuestionFooterProps> = ({ daCluster, daKeys, taxonomy, construct, marks, editMode, onUpdate, hasSubQuestions }) => {
+  const displayDa = daKeys && daKeys.length > 0 ? daKeys.join(', ') : daCluster || "";
 
-  const handleMqfChange = (val: string) => {
+  const handleDaChange = (val: string) => {
     const keys = val.split(',').map(k => k.trim()).filter(k => !!k);
-    onUpdate({ mqfKeys: keys, taxonomy, marks, mqfCluster: keys.join(', '), construct });
+    onUpdate({ daKeys: keys, taxonomy, marks, daCluster: keys.join(', '), construct });
   };
 
   return (
@@ -26,11 +26,11 @@ export const QuestionFooter: React.FC<QuestionFooterProps> = ({ mqfCluster, mqfK
         <div className="flex flex-col gap-1 items-end w-full">
           <div className="flex gap-4 justify-end w-full flex-wrap">
             <div className="flex flex-col items-end">
-              <label className="text-[7px] text-blue-400 font-black uppercase tracking-widest mb-0.5">MQF Keys (comma separated)</label>
+              <label className="text-[7px] text-blue-400 font-black uppercase tracking-widest mb-0.5">Dublin Accord Keys (comma separated)</label>
               <input 
                 className="w-40 bg-blue-50 border border-blue-100 text-right px-2 py-1 text-[10px] font-bold rounded-lg outline-none focus:border-blue-400" 
-                value={displayMqf} 
-                onChange={(e) => handleMqfChange(e.target.value)}
+                value={displayDa} 
+                onChange={(e) => handleDaChange(e.target.value)}
                 placeholder="e.g. DK1, DK3"
               />
             </div>
@@ -39,7 +39,7 @@ export const QuestionFooter: React.FC<QuestionFooterProps> = ({ mqfCluster, mqfK
               <select 
                 className="w-32 bg-blue-50 border border-blue-100 text-right px-2 py-1 text-[10px] font-bold rounded-lg outline-none focus:border-blue-400" 
                 value={construct || "SS"} 
-                onChange={(e) => onUpdate({ mqfKeys, taxonomy, marks, mqfCluster, construct: e.target.value })}
+                onChange={(e) => onUpdate({ daKeys, taxonomy, marks, daCluster, construct: e.target.value })}
               >
                 <option value="SS">Specific Skills (SS)</option>
                 <option value="GS">Generic Skills (GS)</option>
@@ -50,7 +50,7 @@ export const QuestionFooter: React.FC<QuestionFooterProps> = ({ mqfCluster, mqfK
               <input 
                 className="w-24 bg-blue-50 border border-blue-100 text-center px-2 py-1 text-[10px] font-bold rounded-lg outline-none focus:border-blue-400" 
                 value={taxonomy || ""} 
-                onChange={(e) => onUpdate({ mqfKeys, taxonomy: e.target.value, marks, mqfCluster, construct })}
+                onChange={(e) => onUpdate({ daKeys, taxonomy: e.target.value, marks, daCluster, construct })}
                 placeholder="e.g. C1"
               />
             </div>
@@ -67,7 +67,7 @@ export const QuestionFooter: React.FC<QuestionFooterProps> = ({ mqfCluster, mqfK
                 }`} 
                 value={marks} 
                 disabled={hasSubQuestions}
-                onChange={(e) => onUpdate({ mqfKeys, taxonomy, marks: parseInt(e.target.value) || 0, mqfCluster, construct })}
+                onChange={(e) => onUpdate({ daKeys, taxonomy, marks: parseInt(e.target.value) || 0, daCluster, construct })}
               />
             </div>
           </div>
@@ -75,8 +75,8 @@ export const QuestionFooter: React.FC<QuestionFooterProps> = ({ mqfCluster, mqfK
       ) : (
         <div className="flex flex-col items-end">
           <div className="flex gap-1 items-center font-bold text-[10px] mb-0.5 uppercase tracking-tighter text-gray-500">
-             {displayMqf && <span>{displayMqf}</span>}
-             {displayMqf && (taxonomy || construct) && <span>,</span>}
+             {displayDa && <span>{displayDa}</span>}
+             {displayDa && (taxonomy || construct) && <span>,</span>}
              {taxonomy && <span>{taxonomy}</span>}
              {taxonomy && construct && <span>,</span>}
              {construct && <span>{construct}</span>}

@@ -6,15 +6,15 @@ export const Compliance: React.FC = () => {
       <div className="text-center mb-16">
         <h1 className="text-5xl font-black text-slate-900 mb-6 uppercase tracking-tight tracking-tighter">Academic Compliance</h1>
         <p className="text-xl text-slate-500 max-w-3xl mx-auto leading-relaxed">
-          PolyGen ensures that every assessment generated meets the rigorous standards of the Malaysian Qualifications Framework (MQF) and the Dublin Accord.
+          PolyGen ensures that every assessment generated meets the rigorous standards of the Dublin Accord.
         </p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mb-16">
         <div className="bg-white p-10 rounded-[48px] border border-slate-200 shadow-sm">
-          <h2 className="text-2xl font-black text-slate-900 mb-6 uppercase tracking-tight">MQF & Dublin Accord</h2>
+          <h2 className="text-2xl font-black text-slate-900 mb-6 uppercase tracking-tight">Dublin Accord Standards</h2>
           <p className="leading-relaxed mb-6">
-            The system is pre-configured with the latest MQF and Dublin Accord standards. It enforces the correct mapping of Learning Domains and Taxonomy levels (Cognitive, Psychomotor, Affective) to every assessment item.
+            The system is pre-configured with the latest Dublin Accord standards. It enforces the correct mapping of Learning Domains and Taxonomy levels (Cognitive, Psychomotor, Affective) to every assessment item.
           </p>
           <div className="space-y-4">
             <div className="flex items-center gap-3 text-sm font-bold text-slate-600">
@@ -65,7 +65,7 @@ export const Compliance: React.FC = () => {
             <div className="text-[10px] font-black text-slate-500 uppercase tracking-widest">CIST Alignment</div>
           </div>
           <div className="p-6 bg-white/5 rounded-3xl border border-white/10">
-            <div className="text-2xl font-black text-white mb-2">MQF-DA</div>
+            <div className="text-2xl font-black text-white mb-2 uppercase">Dublin Accord</div>
             <div className="text-[10px] font-black text-slate-500 uppercase tracking-widest">Standard Compliance</div>
           </div>
           <div className="p-6 bg-white/5 rounded-3xl border border-white/10">

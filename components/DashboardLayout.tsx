@@ -54,8 +54,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children, acti
       items: [
         { id: 'sessions', label: 'Session', icon: '⏳', allowedRoles: ['Administrator'] },
         { id: 'manage-templates', label: 'Assessment Templates', icon: '🎨', allowedRoles: ['Administrator'] },
-        { id: 'global-mqf', label: 'Global MQF/DA', icon: '🧬', allowedRoles: ['Administrator'] },
-        { id: 'branding', label: 'Institution Identity', icon: '⚙️', allowedRoles: ['Administrator'] },
+        { id: 'global-da', label: 'Dublin Accord', icon: '🧬', allowedRoles: ['Administrator'] },
         { id: 'users', label: 'Staff Management', icon: '👥', allowedRoles: ['Administrator'] },
       ]
     },

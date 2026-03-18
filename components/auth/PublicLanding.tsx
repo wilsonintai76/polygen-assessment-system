@@ -375,7 +375,7 @@ export const PublicLanding: React.FC<PublicLandingProps> = ({ onLogin, showToast
          <div className="max-w-7xl mx-auto px-6">
             <div className="text-center mb-16">
                <h2 className="text-3xl font-black text-white uppercase tracking-tight mb-4">Features</h2>
-               <p className="text-slate-400 max-w-2xl mx-auto">Designed for the specific needs of Malaysian Polytechnic institutions, ensuring compliance with MQF and Dublin Accord standards.</p>
+               <p className="text-slate-400 max-w-2xl mx-auto">Designed for the specific needs of Malaysian Polytechnic institutions, ensuring compliance with Dublin Accord standards.</p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -429,12 +429,12 @@ export const PublicLanding: React.FC<PublicLandingProps> = ({ onLogin, showToast
          <div className="max-w-7xl mx-auto px-6">
             <div className="text-center mb-16">
                <h2 className="text-3xl font-black text-white uppercase tracking-tight mb-4">Compliance</h2>
-               <p className="text-slate-400 max-w-2xl mx-auto">Ensuring alignment with MQF and Dublin Accord standards through automated verification.</p>
+               <p className="text-slate-400 max-w-2xl mx-auto">Ensuring alignment with Dublin Accord standards through automated verification.</p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
                <div className="bg-slate-800/30 border border-white/5 p-10 rounded-[40px]">
-                  <h3 className="text-2xl font-black text-white mb-6 uppercase tracking-tight">MQF-DA Standards</h3>
+                  <h3 className="text-2xl font-black text-white mb-6 uppercase tracking-tight">Dublin Accord Standards</h3>
                   <p className="text-slate-400 leading-relaxed mb-8">
                      The system enforces correct mapping of Learning Domains and Taxonomy levels (Cognitive, Psychomotor, Affective) to every assessment item.
                   </p>

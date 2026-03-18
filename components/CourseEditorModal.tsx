@@ -1,6 +1,6 @@
 
 import React, { useMemo, useState } from 'react';
-import { Course, Department, Programme, GlobalMqf, AssessmentTaskPolicy, LearningDomain, Taxonomy, DublinAccord } from '../types';
+import { Course, Department, Programme, AssessmentTaskPolicy, LearningDomain, Taxonomy, DublinAccord } from '../types';
 
 interface CourseEditorModalProps {
   course: Course;
@@ -9,19 +9,18 @@ interface CourseEditorModalProps {
   onUpdate: (course: Course) => void;
   departments: Department[];
   programmes: Programme[];
-  globalMqfs: GlobalMqf[];
   dublinAccords: DublinAccord[];
   learningDomains: LearningDomain[];
   taxonomies: Taxonomy[];
 }
 
-type Tab = 'identity' | 'clos' | 'topics' | 'policies' | 'mqfs' | 'syllabus';
+type Tab = 'identity' | 'clos' | 'topics' | 'policies' | 'da' | 'syllabus';
 
 export const CourseEditorModal: React.FC<CourseEditorModalProps> = ({ 
-  course, onSave, onCancel, onUpdate, departments, programmes, learningDomains, taxonomies, globalMqfs, dublinAccords 
+  course, onSave, onCancel, onUpdate, departments, programmes, learningDomains, taxonomies, dublinAccords 
 }) => {
   const [activeTab, setActiveTab] = useState<Tab>('identity');
-  const TABS: Tab[] = ['identity', 'clos', 'topics', 'policies', 'mqfs', 'syllabus'];
+  const TABS: Tab[] = ['identity', 'clos', 'topics', 'policies', 'da', 'syllabus'];
   const currentIdx = TABS.indexOf(activeTab);
 
   const handleNext = () => {
@@ -65,37 +64,37 @@ export const CourseEditorModal: React.FC<CourseEditorModalProps> = ({
     });
   };
 
-  const toggleMqfTaskMapping = (policyId: string, mqfCode: string) => {
-    const currentMappings = { ...(course.mqfMappings || {}) };
-    const mqfs = currentMappings[policyId] || [];
-    const isAdding = !mqfs.includes(mqfCode);
+  const toggleDaTaskMapping = (policyId: string, daCode: string) => {
+    const currentMappings = { ...(course.daMappings || {}) };
+    const daList = currentMappings[policyId] || [];
+    const isAdding = !daList.includes(daCode);
     
-    const nextMqfs = isAdding 
-      ? [...mqfs, mqfCode]
-      : mqfs.filter(c => c !== mqfCode);
+    const nextDaList = isAdding 
+      ? [...daList, daCode]
+      : daList.filter(c => c !== daCode);
     
-    const nextMappings = { ...currentMappings, [policyId]: nextMqfs };
+    const nextMappings = { ...currentMappings, [policyId]: nextDaList };
     
-    // Update the flat mqfs dictionary for definitions
-    const nextMqfDefs = { ...(course.mqfs || {}) };
+    // Update the flat da dictionary for definitions
+    const nextDaDefs = { ...(course.da || {}) };
     if (isAdding) {
-      const allStandards = [...(globalMqfs || []), ...(dublinAccords || [])];
-      const standard = allStandards.find(s => s.code === mqfCode);
+      const allStandards = [...(dublinAccords || [])];
+      const standard = allStandards.find(s => s.code === daCode);
       if (standard) {
-        nextMqfDefs[mqfCode] = standard.description;
+        nextDaDefs[daCode] = standard.description;
       }
     } else {
       // Check if still used elsewhere
-      const stillUsed = Object.values(nextMappings).some(codes => codes.includes(mqfCode));
+      const stillUsed = Object.values(nextMappings).some(codes => codes.includes(daCode));
       if (!stillUsed) {
-        delete nextMqfDefs[mqfCode];
+        delete nextDaDefs[daCode];
       }
     }
 
     onUpdate({
       ...course,
-      mqfMappings: nextMappings,
-      mqfs: nextMqfDefs
+      daMappings: nextMappings,
+      da: nextDaDefs
     });
   };
 
@@ -181,7 +180,7 @@ export const CourseEditorModal: React.FC<CourseEditorModalProps> = ({
            <button onClick={() => setActiveTab('clos')} className={tabClass('clos')}>2. Learning Outcomes</button>
            <button onClick={() => setActiveTab('topics')} className={tabClass('topics')}>3. Course Topics</button>
            <button onClick={() => setActiveTab('policies')} className={tabClass('policies')}>4. Assessment Policies</button>
-           <button onClick={() => setActiveTab('mqfs')} className={tabClass('mqfs')}>5. Standards Mapping</button>
+           <button onClick={() => setActiveTab('da')} className={tabClass('da')}>5. Standards Mapping</button>
            <button onClick={() => setActiveTab('syllabus')} className={tabClass('syllabus')}>6. Syllabus Context</button>
         </div>
         
@@ -411,15 +410,15 @@ export const CourseEditorModal: React.FC<CourseEditorModalProps> = ({
               </div>
            )}
 
-           {activeTab === 'mqfs' && (
+           {activeTab === 'da' && (
               <div className="space-y-6 animate-in fade-in duration-300">
                 <div className="flex justify-between items-center mb-4">
                    <div>
                      <h4 className="text-[11px] font-black text-indigo-600 uppercase tracking-widest flex items-center gap-2">
                         <span className="w-2 h-2 rounded-full bg-indigo-400"></span>
-                        MQF / Dublin Standard Mapping
+                        Dublin Accord Standard Mapping
                      </h4>
-                     <p className="text-[8px] text-slate-400 font-bold mt-1">Map Global MQF/DA standards to Assessment Tasks</p>
+                     <p className="text-[8px] text-slate-400 font-bold mt-1">Map Dublin Accord Registry standards to Assessment Tasks</p>
                    </div>
                 </div>
                  <div className="space-y-8">
@@ -428,31 +427,13 @@ export const CourseEditorModal: React.FC<CourseEditorModalProps> = ({
                       <div className="flex gap-4 items-start">
                         <div className="w-full">
                           <label className="text-[10px] font-black text-slate-600 uppercase ml-1 block mb-3">{policy.name || 'Unnamed Task'}</label>
-                          <div className="flex flex-wrap gap-2 mb-4">
-                            {globalMqfs.map(mqf => {
-                              const isMapped = (course.mqfMappings?.[policy.id] || []).includes(mqf.code);
-                              return (
-                                <button 
-                                  key={mqf.code} 
-                                  onClick={() => toggleMqfTaskMapping(policy.id, mqf.code)}
-                                  title={mqf.description}
-                                  className={`px-3 py-1.5 rounded-lg text-[9px] font-black uppercase transition-all ${
-                                    isMapped ? 'bg-indigo-600 text-white shadow-md ring-2 ring-indigo-200' : 'bg-white text-slate-400 border border-slate-200 hover:bg-slate-100'
-                                  }`}
-                                >
-                                  {mqf.code}
-                                </button>
-                              );
-                            })}
-                          </div>
-                          <label className="text-[10px] font-black text-slate-600 uppercase ml-1 block mb-3">Dublin Accords</label>
                           <div className="flex flex-wrap gap-2">
                             {dublinAccords.map(da => {
-                              const isMapped = (course.mqfMappings?.[policy.id] || []).includes(da.code);
+                              const isMapped = (course.daMappings?.[policy.id] || []).includes(da.code);
                               return (
                                 <button 
                                   key={da.code} 
-                                  onClick={() => toggleMqfTaskMapping(policy.id, da.code)}
+                                  onClick={() => toggleDaTaskMapping(policy.id, da.code)}
                                   title={da.description}
                                   className={`px-3 py-1.5 rounded-lg text-[9px] font-black uppercase transition-all ${
                                     isMapped ? 'bg-rose-600 text-white shadow-md ring-2 ring-rose-200' : 'bg-white text-slate-400 border border-slate-200 hover:bg-slate-100'

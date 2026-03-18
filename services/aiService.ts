@@ -24,9 +24,9 @@ export async function chatWithAssistant(message: string, context?: string) {
       contents: prompt,
     });
     return response.text?.trim() || "I'm sorry, I couldn't process that.";
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Chat Error:", error);
-    if (error?.status === 429 || error?.message?.includes('429')) {
+    if (error instanceof Error && (error.message.includes('429') || (error as { status?: number }).status === 429)) {
       return "Rate limit exceeded. Please wait a moment before trying again.";
     }
     return "Error communicating with AI.";
@@ -76,9 +76,9 @@ export async function autoGenerateConstructs(params: {
       }
     });
     return JSON.parse(response.text || "[]") as { task: string; construct: string }[];
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Auto-Generate Error:", error);
-    if (error?.status === 429 || error?.message?.includes('429')) {
+    if (error instanceof Error && (error.message.includes('429') || (error as { status?: number }).status === 429)) {
       throw new Error("Rate limit exceeded. Please try again in a few minutes.");
     }
     return [];
@@ -87,17 +87,17 @@ export async function autoGenerateConstructs(params: {
 
 export async function suggestConstruct(params: {
   clos: string[];
-  mqfStandards: string[];
+  daStandards: string[];
   taskName: string;
 }) {
-  const { clos, mqfStandards, taskName } = params;
+  const { clos, daStandards, taskName } = params;
   
   const prompt = `
     As an expert in Malaysian Polytechnic Outcome-Based Education (OBE), suggest a professional "CONSTRUCT (GS/SS)" description for an assessment task.
     
     Assessment Task: ${taskName}
     Associated CLOs: ${clos.join(', ')}
-    Mapped MQF/Dublin Standards: ${mqfStandards.join(', ')}
+    Mapped Dublin Accord Standards: ${daStandards.join(', ')}
     
     The construct should specify if it is a General Skill (GS) or Specific Skill (SS) and provide a concise description of what is being measured (e.g., "GS: Critical Thinking and Problem Solving" or "SS: Application of Workshop Safety Procedures").
     
@@ -110,9 +110,9 @@ export async function suggestConstruct(params: {
       contents: prompt,
     });
     return response.text?.trim() || "GS: General Skills / SS: Specific Skills";
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("AI Suggestion Error:", error);
-    if (error?.status === 429 || error?.message?.includes('429')) {
+    if (error instanceof Error && (error.message.includes('429') || (error as { status?: number }).status === 429)) {
       return "Rate limit exceeded. Please wait.";
     }
     return "Error generating suggestion. Please try again.";

@@ -18,7 +18,9 @@ export interface ItemType {
 
 export interface DublinAccord {
   id: string;
+  profile_type: "DK" | "DP" | "NA";
   code: string;
+  title: string;
   description: string;
 }
 
@@ -125,12 +127,6 @@ export interface Programme {
   headOfProgramme?: string;
 }
 
-export interface GlobalMqf {
-  id: string;
-  code: string;
-  description: string;
-}
-
 export interface CISTCognitiveLevel {
   count: string;
   marks: number;
@@ -157,7 +153,7 @@ export interface MatrixRow {
   totalMark?: number;
   construct?: string;
   itemTypes?: string[];
-  mqfCluster?: string;
+  daCluster?: string;
 }
 
 export interface HeaderData {
@@ -229,8 +225,8 @@ export interface Question {
   topic?: string;
   cloKey?: string;
   cloKeys?: string[];
-  mqfCluster?: string;
-  mqfKeys?: string[];
+  daCluster?: string;
+  daKeys?: string[];
 }
 
 export interface FooterData {
@@ -255,7 +251,7 @@ export interface TemplateSection {
   type: "header" | "matrix" | "student-info" | "instructions" | "questions" | "footer" | "custom-text";
   title?: string;
   visible: boolean;
-  config?: any;
+  config?: Record<string, unknown>;
 }
 
 export interface AssessmentTemplate {
@@ -282,7 +278,7 @@ export interface AssessmentPaper {
   questions: Question[];
   footer: FooterData;
   cloDefinitions?: Record<string, string>;
-  mqfClusters?: Record<string, string>;
+  daClusters?: Record<string, string>;
   createdAt?: string;
   status?: "draft" | "submitted" | "returned" | "reviewed" | "endorsed";
   authorId?: string;
@@ -300,8 +296,8 @@ export interface Course {
   deptId: string;
   programmeId: string;
   clos: Record<string, string>;
-  mqfs: Record<string, string>;
-  mqfMappings?: Record<string, string[]>;
+  da: Record<string, string>;
+  daMappings?: Record<string, string[]>;
   topics?: string[];
   assessmentPolicies?: AssessmentTaskPolicy[];
   jsuTemplate?: MatrixRow[];
@@ -309,7 +305,3 @@ export interface Course {
   syllabus?: string;
 }
 
-export interface InstitutionalBranding {
-  logoUrl?: string;
-  institutionName: string;
-}

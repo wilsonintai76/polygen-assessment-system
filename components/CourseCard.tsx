@@ -12,8 +12,8 @@ interface CourseCardProps {
 
 export const CourseCard: React.FC<CourseCardProps> = ({ course, user, onEdit, onDelete, onManageJsu }) => {
   const cloCount = Object.keys(course.clos || {}).length;
-  const mappedMqfCodes = new Set(Object.values(course.mqfMappings || {}).flat());
-  const mqfCount = Math.max(Object.keys(course.mqfs || {}).length, mappedMqfCodes.size);
+  const mappedDaCodes = new Set(Object.values(course.daMappings || {}).flat());
+  const daCount = Math.max(Object.keys(course.da || {}).length, mappedDaCodes.size);
   const isJsuDefined = !!(course.jsuTemplate && course.jsuTemplate.length > 0);
   
   // Registration Completeness Checks (Items 1-5 in Registry Editor)
@@ -21,10 +21,10 @@ export const CourseCard: React.FC<CourseCardProps> = ({ course, user, onEdit, on
   const hasClos = cloCount > 0;
   const hasTopics = !!(course.topics && course.topics.length > 0);
   const hasPolicies = !!(course.assessmentPolicies && course.assessmentPolicies.length > 0);
-  const hasMqf = mqfCount > 0;
+  const hasDa = daCount > 0;
 
   // STRICT RULE: All 5 items must be present
-  const isRegistrationComplete = hasMetadata && hasClos && hasTopics && hasPolicies && hasMqf;
+  const isRegistrationComplete = hasMetadata && hasClos && hasTopics && hasPolicies && hasDa;
   
   // Requirement: Only Reviewer or Admin can manage JSU/Course details
   const canManage = user?.role === 'Reviewer' || user?.role === 'Administrator';
@@ -82,7 +82,7 @@ export const CourseCard: React.FC<CourseCardProps> = ({ course, user, onEdit, on
                {!hasClos ? ' CLOS ' : ''}
                {!hasTopics ? ' TOPICS ' : ''}
                {!hasPolicies ? ' POLICIES ' : ''}
-               {!hasMqf ? ' STDS' : ''}
+               {!hasDa ? ' STDS' : ''}
              </span>
           </div>
         ) : isJsuDefined ? (
@@ -124,7 +124,7 @@ export const CourseCard: React.FC<CourseCardProps> = ({ course, user, onEdit, on
       {/* Divider */}
       <div className="mt-auto pt-6 border-t border-slate-50 flex justify-between items-center text-[10px] font-black text-[#94a3b8] uppercase tracking-widest">
         <span>{cloCount} CLOS</span>
-        <span>{mqfCount} MQF/DA</span>
+        <span>{daCount} Dublin Accord</span>
       </div>
     </div>
   );

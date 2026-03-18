@@ -43,7 +43,7 @@ export const PrivacyPolicy: React.FC = () => {
           <li>To provide and maintain the assessment generation service.</li>
           <li>To verify institutional affiliation and restrict access to authorized staff.</li>
           <li>To facilitate the review and endorsement workflow of examination papers.</li>
-          <li>To ensure compliance with academic standards (MQF, Dublin Accord).</li>
+          <li>To ensure compliance with academic standards (Dublin Accord).</li>
           <li>To generate institutional reports and analytics.</li>
         </ul>
       </section>

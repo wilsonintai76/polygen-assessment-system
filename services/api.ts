@@ -1,5 +1,4 @@
 import {
-  InstitutionalBranding,
   Course,
   Question,
   AssessmentPaper,
@@ -14,9 +13,7 @@ import {
   Taxonomy,
   ItemType,
   DublinAccord,
-  GlobalMqf,
 } from "../types";
-import { DEFAULT_BRANDING } from "../constants";
 import { supabase } from "./supabase";
 
 // We now strictly require Supabase configuration.
@@ -509,8 +506,8 @@ async function request<T>(path: string, options?: RequestInit): Promise<T> {
             topics: topicsArray.length > 0 ? topicsArray : c.topics,
             assessmentPolicies: typeof c.assessment_policies === 'string' ? (c.assessment_policies ? JSON.parse(c.assessment_policies) : []) : (c.assessment_policies || []),
             jsuTemplate: jsuTemplate,
-            mqfs: typeof c.mqfs === 'string' ? (c.mqfs ? JSON.parse(c.mqfs) : {}) : (c.mqfs || {}),
-            mqfMappings: typeof c.mqf_mappings === 'string' ? (c.mqf_mappings ? JSON.parse(c.mqf_mappings) : {}) : (c.mqf_mappings || {}),
+            da: typeof c.mqfs === 'string' ? (c.mqfs ? JSON.parse(c.mqfs) : {}) : (c.mqfs || {}),
+            daMappings: typeof c.mqf_mappings === 'string' ? (c.mqf_mappings ? JSON.parse(c.mqf_mappings) : {}) : (c.mqf_mappings || {}),
           };
         }) as T;
       }
@@ -530,8 +527,8 @@ async function request<T>(path: string, options?: RequestInit): Promise<T> {
           .update({
             assessment_policies: data.assessmentPolicies || [],
             jsu_template: data.jsuTemplate || [],
-            mqfs: data.mqfs || {},
-            mqf_mappings: data.mqfMappings || {}
+            mqfs: data.da || {},
+            mqf_mappings: data.daMappings || {}
           })
           .eq("id", courseId);
 
@@ -551,8 +548,8 @@ async function request<T>(path: string, options?: RequestInit): Promise<T> {
           programmeId: savedCourse.programme_id,
           assessmentPolicies: typeof savedCourse.assessment_policies === 'string' ? (savedCourse.assessment_policies ? JSON.parse(savedCourse.assessment_policies) : []) : (savedCourse.assessment_policies || []),
           jsuTemplate: typeof savedCourse.jsu_template === 'string' ? (savedCourse.jsu_template ? JSON.parse(savedCourse.jsu_template) : []) : (savedCourse.jsu_template || []),
-          mqfs: typeof savedCourse.mqfs === 'string' ? (savedCourse.mqfs ? JSON.parse(savedCourse.mqfs) : {}) : (savedCourse.mqfs || {}),
-          mqfMappings: typeof savedCourse.mqf_mappings === 'string' ? (savedCourse.mqf_mappings ? JSON.parse(savedCourse.mqf_mappings) : {}) : (savedCourse.mqf_mappings || {}),
+          da: typeof savedCourse.mqfs === 'string' ? (savedCourse.mqfs ? JSON.parse(savedCourse.mqfs) : {}) : (savedCourse.mqfs || {}),
+          daMappings: typeof savedCourse.mqf_mappings === 'string' ? (savedCourse.mqf_mappings ? JSON.parse(savedCourse.mqf_mappings) : {}) : (savedCourse.mqf_mappings || {}),
         } as T;
       }
       if (method === "DELETE") {
@@ -574,7 +571,7 @@ async function request<T>(path: string, options?: RequestInit): Promise<T> {
           courseId: q.course_id,
           sectionTitle: q.section_title,
           cloKeys: q.clo_keys || [],
-          mqfKeys: q.mqf_keys || [],
+          daKeys: q.mqf_keys || [],
           subQuestions: q.sub_questions || [],
           options: q.options || [],
           imageUrl: q.image_url,
@@ -598,7 +595,7 @@ async function request<T>(path: string, options?: RequestInit): Promise<T> {
           type: data.type,
           answer: data.answer,
           clo_keys: data.cloKeys,
-          mqf_keys: data.mqfKeys,
+          mqf_keys: data.daKeys,
           sub_questions: data.subQuestions,
           options: data.options,
           image_url: data.imageUrl,
@@ -621,7 +618,7 @@ async function request<T>(path: string, options?: RequestInit): Promise<T> {
           courseId: question.course_id,
           sectionTitle: question.section_title,
           cloKeys: question.clo_keys,
-          mqfKeys: question.mqf_keys,
+          daKeys: question.mqf_keys,
           subQuestions: question.sub_questions,
           options: question.options,
           imageUrl: question.image_url,
@@ -645,7 +642,7 @@ async function request<T>(path: string, options?: RequestInit): Promise<T> {
           type: data.type,
           answer: data.answer,
           clo_keys: data.cloKeys,
-          mqf_keys: data.mqfKeys,
+          mqf_keys: data.daKeys,
           sub_questions: data.subQuestions,
           options: data.options,
           image_url: data.imageUrl,
@@ -669,7 +666,7 @@ async function request<T>(path: string, options?: RequestInit): Promise<T> {
           courseId: question.course_id,
           sectionTitle: question.section_title,
           cloKeys: question.clo_keys,
-          mqfKeys: question.mqf_keys,
+          daKeys: question.mqf_keys,
           subQuestions: question.sub_questions,
           options: question.options,
           imageUrl: question.image_url,
@@ -703,7 +700,7 @@ async function request<T>(path: string, options?: RequestInit): Promise<T> {
           footer: p.footer_data || {},
           questions: p.questions || [],
           cloDefinitions: p.clo_definitions || {},
-          mqfClusters: p.mqf_clusters || {},
+          daClusters: p.mqf_clusters || {},
           feedback: p.feedback || "",
           checklist: p.checklist || [],
           checklistNotes: p.checklist_notes || [],
@@ -724,7 +721,7 @@ async function request<T>(path: string, options?: RequestInit): Promise<T> {
           footer_data: data.footer,
           questions: data.questions,
           clo_definitions: data.cloDefinitions,
-          mqf_clusters: data.mqfClusters,
+          mqf_clusters: data.daClusters,
           feedback: data.feedback,
           checklist: data.checklist,
           checklist_notes: data.checklistNotes,
@@ -749,7 +746,7 @@ async function request<T>(path: string, options?: RequestInit): Promise<T> {
           footer: paper.footer_data || {},
           questions: paper.questions || [],
           cloDefinitions: paper.clo_definitions || {},
-          mqfClusters: paper.mqf_clusters || {},
+          daClusters: paper.mqf_clusters || {},
           feedback: paper.feedback || "",
           checklist: paper.checklist || [],
           checklistNotes: paper.checklist_notes || [],
@@ -770,7 +767,7 @@ async function request<T>(path: string, options?: RequestInit): Promise<T> {
           footer_data: data.footer,
           questions: data.questions,
           clo_definitions: data.cloDefinitions,
-          mqf_clusters: data.mqfClusters,
+          mqf_clusters: data.daClusters,
           feedback: data.feedback,
           checklist: data.checklist,
           checklist_notes: data.checklistNotes,
@@ -796,21 +793,12 @@ async function request<T>(path: string, options?: RequestInit): Promise<T> {
           footer: paper.footer_data || {},
           questions: paper.questions || [],
           cloDefinitions: paper.clo_definitions || {},
-          mqfClusters: paper.mqf_clusters || {},
+          daClusters: paper.mqf_clusters || {},
           feedback: paper.feedback || "",
           checklist: paper.checklist || [],
           checklistNotes: paper.checklist_notes || [],
           history: paper.history || [],
         } as T;
-      }
-    }
-
-    if (path.includes("/branding/")) {
-      if (method === "GET") {
-        return DEFAULT_BRANDING as T;
-      }
-      if (method === "PUT") {
-        return DEFAULT_BRANDING as T;
       }
     }
 
@@ -989,14 +977,6 @@ export const api = {
       }),
     delete: (id: string) => request(`/sessions/${id}/`, { method: "DELETE" }),
   },
-  branding: {
-    get: () => request<InstitutionalBranding>("/branding/"),
-    update: (data: InstitutionalBranding) =>
-      request<InstitutionalBranding>(`/branding/1/`, {
-        method: "PUT",
-        body: JSON.stringify(data),
-      }),
-  },
   courses: {
     list: () => request<Course[]>("/courses/"),
     save: (data: Course) =>
@@ -1070,7 +1050,7 @@ export const api = {
         console.warn("Failed to save template to Supabase, falling back to localStorage", e);
         const local = localStorage.getItem("polygen_templates");
         const templates = local ? JSON.parse(local) : [];
-        const idx = templates.findIndex((t: any) => t.id === template.id);
+        const idx = templates.findIndex((t: AssessmentTemplate) => t.id === template.id);
         if (idx >= 0) {
           templates[idx] = template;
         } else {
@@ -1088,7 +1068,7 @@ export const api = {
         console.warn("Failed to delete template from Supabase, falling back to localStorage", e);
         const local = localStorage.getItem("polygen_templates");
         if (local) {
-          const templates = JSON.parse(local).filter((t: any) => t.id !== id);
+          const templates = JSON.parse(local).filter((t: AssessmentTemplate) => t.id !== id);
           localStorage.setItem("polygen_templates", JSON.stringify(templates));
         }
       }
@@ -1112,14 +1092,14 @@ export const api = {
       request<LearningDomain[]>("/lookup/learning_domains"),
     taxonomies: () => request<Taxonomy[]>("/lookup/taxonomies"),
     itemTypes: () => request<ItemType[]>("/lookup/item_types"),
-    dublinAccords: () => request<DublinAccord[]>("/lookup/dublin_accords"),
+    dublinAccords: () => request<DublinAccord[]>("/lookup/dublin_accord_standards"),
     saveDublinAccord: (data: DublinAccord) => {
       const isLocal = data.id && data.id.toString().includes("local");
       const payload: Partial<DublinAccord> = { ...data };
       if (isLocal) delete payload.id;
 
       return request<DublinAccord>(
-        `/lookup/dublin_accords/${!isLocal ? data.id + "/" : ""}`,
+        `/lookup/dublin_accord_standards/${!isLocal ? data.id + "/" : ""}`,
         {
           method: !isLocal ? "PUT" : "POST",
           body: JSON.stringify(payload),
@@ -1127,23 +1107,7 @@ export const api = {
       );
     },
     deleteDublinAccord: (id: string) =>
-      request(`/lookup/dublin_accords/${id}/`, { method: "DELETE" }),
-    globalMqfs: () => request<GlobalMqf[]>("/lookup/global_mqfs"),
-    saveGlobalMqf: (data: GlobalMqf) => {
-      const isLocal = data.id && data.id.toString().includes("local");
-      const payload: Partial<GlobalMqf> = { ...data };
-      if (isLocal) delete payload.id;
-
-      return request<GlobalMqf>(
-        `/lookup/global_mqfs/${!isLocal ? data.id + "/" : ""}`,
-        {
-          method: !isLocal ? "PUT" : "POST",
-          body: JSON.stringify(payload),
-        },
-      );
-    },
-    deleteGlobalMqf: (id: string) =>
-      request(`/lookup/global_mqfs/${id}/`, { method: "DELETE" }),
+      request(`/lookup/dublin_accord_standards/${id}/`, { method: "DELETE" }),
   },
   storage: {
     uploadLogo: async (file: File): Promise<string> => {

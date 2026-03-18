@@ -465,16 +465,16 @@ export const QuestionItem: React.FC<QuestionItemProps> = ({ question, editMode, 
       </div>
 
       <QuestionFooter 
-        mqfKeys={question.mqfKeys}
-        mqfCluster={question.mqfCluster}
+        daKeys={question.daKeys}
+        daCluster={question.daCluster}
         taxonomy={question.taxonomy} 
         construct={question.construct}
         marks={question.marks} 
         editMode={editMode} 
         hasSubQuestions={hasSubQuestions}
         onUpdate={(data) => {
-          handleChange('mqfKeys', data.mqfKeys);
-          handleChange('mqfCluster', data.mqfCluster);
+          handleChange('daKeys', data.daKeys);
+          handleChange('daCluster', data.daCluster);
           handleChange('taxonomy', data.taxonomy);
           handleChange('construct', data.construct);
           handleChange('marks', data.marks);

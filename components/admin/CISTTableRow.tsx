@@ -41,12 +41,12 @@ export const CISTTableRow: React.FC<CISTTableRowProps> = ({
     // Get CLO descriptions
     const cloDescriptions = (row.clos || []).map(k => `${k}: ${course?.clos?.[k] || ''}`);
     
-    // Get MQF standards for this task
-    const mqfStandards = course?.mqfMappings?.[selectedPolicy?.id || ''] || [];
+    // Get Dublin Accord standards for this task
+    const daStandards = course?.daMappings?.[selectedPolicy?.id || ''] || [];
 
     const suggestion = await suggestConstruct({
       clos: cloDescriptions,
-      mqfStandards: mqfStandards,
+      daStandards: daStandards,
       taskName: row.task
     });
     

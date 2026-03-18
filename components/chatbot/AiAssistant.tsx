@@ -61,10 +61,10 @@ export const AiAssistant: React.FC = () => {
       const response = await chatSession.current.sendMessage({ message: userMsg });
       const text = response.text || "I couldn't generate a response.";
       setMessages(prev => [...prev, { role: 'model', text }]);
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error("Chat Error:", error);
       let errorMsg = "I'm sorry, I encountered an error connecting to the server. Please try again.";
-      if (error?.status === 429 || error?.message?.includes('429')) {
+      if (error instanceof Error && (error.message.includes('429') || (error as { status?: number }).status === 429)) {
         errorMsg = "Rate limit exceeded. The AI is a bit busy right now. Please wait a minute before sending another message.";
       }
       setMessages(prev => [...prev, { role: 'model', text: errorMsg }]);

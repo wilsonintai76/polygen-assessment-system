@@ -9,9 +9,9 @@ interface BankManagementProps {
   onBatchAdd: (qs: Question[]) => void;
   currentBank: Question[];
   availableClos: string[];
-  availableMqf: string[];
+  availableDa: string[];
   onAddCLO: (key: string) => void;
-  onAddMQF: (val: string) => void;
+  onAddDa: (val: string) => void;
   availableCourses: Course[];
   showToast?: (message: string, section: string) => void;
 }
@@ -61,7 +61,7 @@ export const BankManagement: React.FC<BankManagementProps> = ({ onSave, currentB
   
   const [newQ, setNewQ] = useState<Partial<Question>>({
     courseId: '', sectionTitle: '', topic: '', type: 'structure', marks: 1,
-    cloKeys: [], mqfKeys: [], text: '', answer: '', taxonomy: '',
+    cloKeys: [], daKeys: [], text: '', answer: '', taxonomy: '',
     construct: '', domain: 'Cognitive', subQuestions: [], options: ['', '', '', ''],
     mediaType: undefined, figureLabel: 'Figure 1', answerImageUrl: '', answerFigureLabel: 'Solution Sketch'
   });
@@ -116,10 +116,10 @@ export const BankManagement: React.FC<BankManagementProps> = ({ onSave, currentB
     return constrainedList.map(l => ({ value: l, label: l === maxTax ? `${l} (CEILING)` : l }));
   }, [newQ.domain, selectedTaskPolicy]);
 
-  // Constrain MQF Attributes based on Task Mapping in Registry
-  const constrainedMqfs = useMemo(() => {
+  // Constrain Dublin Accord Attributes based on Task Mapping in Registry
+  const constrainedDa = useMemo(() => {
     if (!selectedCourse || !selectedTaskPolicy) return [];
-    const mappings = selectedCourse.mqfMappings || {};
+    const mappings = selectedCourse.daMappings || {};
     return mappings[selectedTaskPolicy.id] || [];
   }, [selectedCourse, selectedTaskPolicy]);
 
@@ -196,7 +196,7 @@ export const BankManagement: React.FC<BankManagementProps> = ({ onSave, currentB
     }
   };
 
-  const toggleLink = (field: 'mqfKeys' | 'cloKeys', key: string) => {
+  const toggleLink = (field: 'daKeys' | 'cloKeys', key: string) => {
     const current = (newQ[field] || []) as string[];
     const next = current.includes(key) ? current.filter(k => k !== key) : [...current, key];
     setNewQ({ ...newQ, [field]: next });
@@ -287,7 +287,7 @@ export const BankManagement: React.FC<BankManagementProps> = ({ onSave, currentB
                     </div>
                     <div>
                       <FormLabel>Assessment Task</FormLabel>
-                      <SelectField placeholder="-- Select Task --" disabled={!newQ.courseId} value={newQ.sectionTitle || ''} options={assessmentOptions} onChange={val => setNewQ({ ...newQ, sectionTitle: val, topic: '', mqfKeys: [] })} />
+                      <SelectField placeholder="-- Select Task --" disabled={!newQ.courseId} value={newQ.sectionTitle || ''} options={assessmentOptions} onChange={val => setNewQ({ ...newQ, sectionTitle: val, topic: '', daKeys: [] })} />
                     </div>
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -334,11 +334,11 @@ export const BankManagement: React.FC<BankManagementProps> = ({ onSave, currentB
                       </div>
                     </div>
                     <div>
-                      <FormLabel>MQF/Dublin (Registry Mapped)</FormLabel>
+                      <FormLabel>Dublin Accord (Registry Mapped)</FormLabel>
                       <div className="flex flex-wrap gap-2 p-5 bg-slate-50 border border-slate-100 rounded-[24px] min-h-[120px] content-start">
-                        {constrainedMqfs.length > 0 ? constrainedMqfs.map(k => (
-                          <button key={k} type="button" onClick={() => toggleLink('mqfKeys', k)}
-                            className={`px-3 py-1.5 rounded-xl text-[10px] font-black uppercase transition-all ${newQ.mqfKeys?.includes(k) ? 'bg-indigo-600 text-white shadow-lg' : 'bg-white text-slate-400 border border-slate-100'}`}>{k}</button>
+                        {constrainedDa.length > 0 ? constrainedDa.map(k => (
+                          <button key={k} type="button" onClick={() => toggleLink('daKeys', k)}
+                            className={`px-3 py-1.5 rounded-xl text-[10px] font-black uppercase transition-all ${newQ.daKeys?.includes(k) ? 'bg-indigo-600 text-white shadow-lg' : 'bg-white text-slate-400 border border-slate-100'}`}>{k}</button>
                         )) : (
                           <span className="text-[9px] text-slate-300 font-black uppercase m-auto leading-relaxed text-center italic">
                             {selectedTaskPolicy ? 'No attributes mapped to this task in Registry' : 'Select Task to load Standards'}

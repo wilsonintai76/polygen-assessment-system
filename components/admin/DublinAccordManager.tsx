@@ -1,37 +1,28 @@
 import React, { useState } from "react";
-import { GlobalMqf, DublinAccord } from "../../types";
+import { DublinAccord } from "../../types";
 import { Search, Plus, Edit, Trash2, X, Save, AlertCircle } from "lucide-react";
 
-interface GlobalMqfManagerProps {
-  attributes: GlobalMqf[];
-  onUpdate: (attrs: GlobalMqf[]) => void;
+interface DublinAccordManagerProps {
   dublinAccords: DublinAccord[];
   onUpdateDublin: (attrs: DublinAccord[]) => void;
 }
 
-export const GlobalMqfManager: React.FC<GlobalMqfManagerProps> = ({
-  attributes,
-  onUpdate,
+export const DublinAccordManager: React.FC<DublinAccordManagerProps> = ({
   dublinAccords,
   onUpdateDublin,
 }) => {
-  const [activeTab, setActiveTab] = useState<"mqf" | "dublin">("mqf");
   const [searchTerm, setSearchTerm] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [editingItem, setEditingItem] = useState<
-    GlobalMqf | DublinAccord | null
-  >(null);
+  const [editingItem, setEditingItem] = useState<DublinAccord | null>(null);
   const [formData, setFormData] = useState({ code: "", description: "" });
 
-  const currentList = activeTab === "mqf" ? attributes : dublinAccords;
-
-  const filteredAttributes = currentList.filter(
+  const filteredAttributes = dublinAccords.filter(
     (attr) =>
       attr.code.toLowerCase().includes(searchTerm.toLowerCase()) ||
       attr.description.toLowerCase().includes(searchTerm.toLowerCase()),
   );
 
-  const handleOpenModal = (item?: GlobalMqf | DublinAccord) => {
+  const handleOpenModal = (item?: DublinAccord) => {
     if (item) {
       setEditingItem(item);
       setFormData({ code: item.code, description: item.description });
@@ -52,56 +43,30 @@ export const GlobalMqfManager: React.FC<GlobalMqfManagerProps> = ({
     e.preventDefault();
     if (!formData.code || !formData.description) return;
 
-    if (activeTab === "mqf") {
-      if (editingItem) {
-        const updatedAttributes = attributes.map((attr) =>
-          attr.id === editingItem.id
-            ? {
-                ...attr,
-                code: formData.code.toUpperCase(),
-                description: formData.description,
-              }
-            : attr,
-        );
-        onUpdate(updatedAttributes);
-      } else {
-        const newAttribute: GlobalMqf = {
-          id: `local-${Date.now()}`,
-          code: formData.code.toUpperCase(),
-          description: formData.description,
-        };
-        onUpdate([...attributes, newAttribute]);
-      }
+    if (editingItem) {
+      const updatedAttributes = dublinAccords.map((attr) =>
+        attr.id === editingItem.id
+          ? {
+              ...attr,
+              code: formData.code.toUpperCase(),
+              description: formData.description,
+            }
+          : attr,
+      );
+      onUpdateDublin(updatedAttributes);
     } else {
-      if (editingItem) {
-        const updatedAttributes = dublinAccords.map((attr) =>
-          attr.id === editingItem.id
-            ? {
-                ...attr,
-                code: formData.code.toUpperCase(),
-                description: formData.description,
-              }
-            : attr,
-        );
-        onUpdateDublin(updatedAttributes);
-      } else {
-        const newAttribute: DublinAccord = {
-          id: `local-${Date.now()}`,
-          code: formData.code.toUpperCase(),
-          description: formData.description,
-        };
-        onUpdateDublin([...dublinAccords, newAttribute]);
-      }
+      const newAttribute: DublinAccord = {
+        id: `local-${Date.now()}`,
+        code: formData.code.toUpperCase(),
+        description: formData.description,
+      };
+      onUpdateDublin([...dublinAccords, newAttribute]);
     }
     handleCloseModal();
   };
 
   const handleDelete = (id: string) => {
-    if (activeTab === "mqf") {
-      onUpdate(attributes.filter((attr) => attr.id !== id));
-    } else {
-      onUpdateDublin(dublinAccords.filter((attr) => attr.id !== id));
-    }
+    onUpdateDublin(dublinAccords.filter((attr) => attr.id !== id));
   };
 
   return (
@@ -109,7 +74,7 @@ export const GlobalMqfManager: React.FC<GlobalMqfManagerProps> = ({
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8">
         <div>
           <h2 className="text-3xl md:text-4xl font-black text-slate-900 tracking-tight uppercase">
-            Global MQF / DA Standards
+            Dublin Accord Registry
           </h2>
           <p className="text-slate-500 font-bold uppercase text-[10px] md:text-[11px] tracking-widest mt-2">
             Manage centralized attributes for curriculum alignment
@@ -121,21 +86,6 @@ export const GlobalMqfManager: React.FC<GlobalMqfManagerProps> = ({
         >
           <Plus size={18} strokeWidth={3} />
           <span className="uppercase tracking-wider text-xs">Add Standard</span>
-        </button>
-      </div>
-
-      <div className="flex gap-4 mb-6">
-        <button
-          onClick={() => setActiveTab("mqf")}
-          className={`px-6 py-3 rounded-xl font-bold text-sm uppercase tracking-wider transition-colors ${activeTab === "mqf" ? "bg-slate-900 text-white shadow-lg" : "bg-white text-slate-500 hover:bg-slate-100 border border-slate-200"}`}
-        >
-          Global MQF
-        </button>
-        <button
-          onClick={() => setActiveTab("dublin")}
-          className={`px-6 py-3 rounded-xl font-bold text-sm uppercase tracking-wider transition-colors ${activeTab === "dublin" ? "bg-slate-900 text-white shadow-lg" : "bg-white text-slate-500 hover:bg-slate-100 border border-slate-200"}`}
-        >
-          Dublin Accord
         </button>
       </div>
 
@@ -242,7 +192,7 @@ export const GlobalMqfManager: React.FC<GlobalMqfManagerProps> = ({
                 <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">
                   {editingItem
                     ? "Update existing definition"
-                    : `Add to ${activeTab === "mqf" ? "Global MQF" : "Dublin Accord"} registry`}
+                    : `Add to Dublin Accord registry`}
                 </p>
               </div>
               <button
@@ -262,9 +212,7 @@ export const GlobalMqfManager: React.FC<GlobalMqfManagerProps> = ({
                   autoFocus
                   type="text"
                   className="w-full bg-slate-50 border-2 border-slate-100 p-4 rounded-2xl outline-none focus:border-blue-500 font-bold text-slate-700 transition placeholder:text-slate-300 uppercase"
-                  placeholder={
-                    activeTab === "mqf" ? "e.g. DK1, MQF1" : "e.g. WA1, DA1"
-                  }
+                  placeholder="e.g. WA1, DA1"
                   value={formData.code}
                   onChange={(e) =>
                     setFormData({
@@ -314,3 +262,4 @@ export const GlobalMqfManager: React.FC<GlobalMqfManagerProps> = ({
     </div>
   );
 };
+

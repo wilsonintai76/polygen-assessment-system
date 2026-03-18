@@ -29,7 +29,7 @@ export const SimpleCourseAddModal: React.FC<SimpleCourseAddModalProps> = ({
     onSave({
       ...formData,
       clos: { 'CLO 1': '' },
-      mqfs: {},
+      da: {},
       topics: [],
       assessmentPolicies: []
     });

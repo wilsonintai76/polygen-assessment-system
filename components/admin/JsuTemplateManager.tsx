@@ -26,12 +26,12 @@ export const JsuTemplateManager: React.FC<JsuTemplateManagerProps> = ({ course, 
   const [template, setTemplate] = useState<JsuSlot[]>(course.jsuTemplate as JsuSlot[] || []);
   
   const cloList = Object.keys(course.clos);
-  const mqfList = Object.keys(course.mqfs);
+  const daList = Object.keys(course.da || {});
 
   const addSlot = () => {
     // Fix: initialize with fields that satisfy JsuSlot extension
     const newSlot: JsuSlot = {
-      mqfCluster: mqfList[0] || 'DK1',
+      daCluster: daList[0] || 'DK1',
       clo: cloList[0] || 'CLO 1',
       topic: '',
       domain: 'Cognitive',
@@ -92,7 +92,7 @@ export const JsuTemplateManager: React.FC<JsuTemplateManagerProps> = ({ course, 
             <thead>
               <tr className="bg-slate-50 text-slate-400 text-[10px] font-black uppercase tracking-widest border-b border-slate-100">
                 <th className="p-6 w-16 text-center">#</th>
-                <th className="p-6 w-[15%]">MQF Attributes</th>
+                <th className="p-6 w-[15%]">Dublin Accord Attributes</th>
                 <th className="p-6 w-[12%]">CLO</th>
                 <th className="p-6 w-[20%]">Topic / Unit</th>
                 <th className="p-6 w-28">Domain</th>
@@ -107,8 +107,8 @@ export const JsuTemplateManager: React.FC<JsuTemplateManagerProps> = ({ course, 
                 <tr key={idx} className="hover:bg-slate-50/50 transition-colors group">
                   <td className="p-6 text-center font-black text-slate-300">{idx + 1}</td>
                   <td className="p-4">
-                     <select className="w-full bg-white border border-slate-100 rounded-xl p-2.5 text-[10px] font-bold outline-none focus:border-blue-400 shadow-sm" value={slot.mqfCluster} onChange={e => updateSlot(idx, 'mqfCluster', e.target.value)}>
-                       {mqfList.length > 0 ? mqfList.map(m => <option key={m} value={m}>{m}</option>) : <option value="">No MQF</option>}
+                     <select className="w-full bg-white border border-slate-100 rounded-xl p-2.5 text-[10px] font-bold outline-none focus:border-blue-400 shadow-sm" value={slot.daCluster} onChange={e => updateSlot(idx, 'daCluster', e.target.value)}>
+                       {daList.length > 0 ? daList.map(m => <option key={m} value={m}>{m}</option>) : <option value="">No Attributes</option>}
                      </select>
                   </td>
                   <td className="p-4">
