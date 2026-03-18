@@ -23,7 +23,7 @@ export const DEFAULT_TEMPLATE: AssessmentTemplate = {
 
 export const DEFAULT_BRANDING: InstitutionalBranding = {
   institutionName: "POLITEKNIK KUCHING SARAWAK",
-  logoUrl: "" // Uses default SVG if empty
+  logoUrl: "https://odzvkxzgoibxxybcocbr.supabase.co/storage/v1/object/public/branding/logopks.png"
 };
 
 export const INITIAL_PAPER_DATA: AssessmentPaper = {

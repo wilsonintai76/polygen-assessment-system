@@ -84,8 +84,11 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLogin, departments, show
           
           <div className="relative z-10 flex flex-col h-full justify-between">
              <div className="flex items-center gap-4">
-                 <div className="w-12 h-12 bg-blue-600 rounded-xl flex items-center justify-center text-white text-2xl font-black shadow-lg">P</div>
-                 <h1 className="text-white font-black text-2xl tracking-tighter">POLY<span className="text-blue-400">GEN</span></h1>
+                 <div className="w-12 h-12 bg-gradient-to-br from-cyan-500 to-teal-500 rounded-xl flex items-center justify-center text-white text-2xl font-black shadow-lg shadow-cyan-500/20">P</div>
+                 <div className="flex flex-col">
+                    <h1 className="text-white font-black text-2xl tracking-tighter uppercase leading-none">Poly<span className="text-cyan-400">Gen</span></h1>
+                    <span className="text-[10px] font-black text-blue-400 uppercase tracking-[0.2em] mt-1">Assessment System</span>
+                 </div>
              </div>
              
              <div className="space-y-6">
@@ -247,7 +250,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLogin, departments, show
            </div>
            
            <div className="absolute bottom-6 text-center w-full text-[10px] text-slate-300 flex flex-col items-center gap-1">
-             <span>© 2025 Polytechnic Assessment Management System. All rights reserved.</span>
+             <span>© 2025 PolyGen Assessment System • Politeknik Kuching Sarawak</span>
              <div className="flex gap-3">
                <a href="/privacy-policy.html" target="_blank" rel="noopener noreferrer" className="hover:text-slate-500 hover:underline">Privacy Policy</a>
                <a href="/terms-of-service.html" target="_blank" rel="noopener noreferrer" className="hover:text-slate-500 hover:underline">Terms of Service</a>

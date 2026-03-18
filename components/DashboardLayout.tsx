@@ -82,12 +82,13 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children, acti
         {/* Brand Identity */}
         <div className="p-8 border-b border-slate-800/50">
           <div className="flex flex-col gap-3">
-             <div className="bg-white/5 p-3 rounded-2xl border border-white/10 flex items-center gap-3">
-                <img src="https://odzvkxzgoibxxybcocbr.supabase.co/storage/v1/object/public/branding/sidebar%20logo.png" alt="Sidebar Logo" className="w-12 object-contain" referrerPolicy="no-referrer" />
-                <div className="flex flex-col">
-                   <span className="text-xl font-black tracking-tight text-white">PolyGen</span>
-                   <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Assessment Paper Generator</span>
-                </div>
+             <div className="bg-white/5 p-4 rounded-2xl border border-white/10 flex items-center justify-center">
+                <img 
+                   src="https://odzvkxzgoibxxybcocbr.supabase.co/storage/v1/object/public/branding/PolyGen%20Logo.png" 
+                   alt="PolyGen Logo" 
+                   className="h-12 w-auto object-contain"
+                   referrerPolicy="no-referrer"
+                />
              </div>
              <div className={`mt-2 flex items-center gap-1.5 px-2 py-0.5 rounded-full w-fit ${api.isSupabaseConfigured ? 'bg-emerald-500/10 text-emerald-400' : 'bg-amber-500/10 text-amber-400'}`}>
                <div className={`w-1.5 h-1.5 rounded-full ${api.isSupabaseConfigured ? 'bg-emerald-400 animate-pulse' : 'bg-amber-400'}`}></div>
@@ -159,8 +160,62 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children, acti
       </aside>
 
       {/* Main Content Area */}
-      <main className="flex-grow overflow-y-auto bg-slate-50 h-screen custom-scrollbar relative">
-        {children}
+      <main className="flex-grow bg-slate-50 h-screen relative flex flex-col overflow-hidden">
+        {/* Dashboard Header */}
+        <header className="px-8 py-4 bg-white border-b border-slate-200 flex items-center justify-between shrink-0 print:hidden">
+           <div className="flex items-center gap-4">
+              <div className="w-10 h-10 rounded-xl bg-blue-600/10 flex items-center justify-center text-xl">
+                 {groups.flatMap(g => g.items).find(i => i.id === activeStep)?.icon || '🏛️'}
+              </div>
+              <div>
+                 <h2 className="text-sm font-black text-slate-900 uppercase tracking-tight">
+                    {groups.flatMap(g => g.items).find(i => i.id === activeStep)?.label || 'Command Hub'}
+                 </h2>
+                 <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+                    {groups.find(g => g.items.some(i => i.id === activeStep))?.label || 'Academic Workspace'}
+                 </p>
+              </div>
+           </div>
+           
+           <div className="flex items-center gap-6">
+              <div className="text-right hidden sm:block">
+                 <p className="text-[10px] font-black text-slate-900 uppercase tracking-tight">{user?.full_name || 'Academic Staff'}</p>
+                 <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest">{user?.role || 'Creator'}</p>
+              </div>
+              <div className="h-8 w-[1px] bg-slate-200 hidden sm:block"></div>
+              <div className="flex items-center gap-3">
+                 <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest hidden md:block">System Status</span>
+                 <div className="flex items-center gap-1.5 px-2 py-1 bg-emerald-500/10 text-emerald-600 rounded-full">
+                    <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></div>
+                    <span className="text-[8px] font-black uppercase tracking-wider">Operational</span>
+                 </div>
+              </div>
+           </div>
+        </header>
+
+        <div className="flex-grow overflow-y-auto custom-scrollbar">
+          {children}
+        </div>
+        
+        {/* Dashboard Footer */}
+        <footer className="px-8 py-6 bg-white border-t border-slate-200 flex items-center justify-between shrink-0 print:hidden">
+           <div className="flex flex-col">
+              <span className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Institution</span>
+              <span className="text-sm font-bold text-slate-700">POLITEKNIK KUCHING SARAWAK</span>
+           </div>
+           <div className="flex items-center gap-4">
+              <div className="text-right flex flex-col">
+                 <span className="text-[8px] font-bold text-slate-400 uppercase tracking-widest">Powered by</span>
+                 <span className="text-[10px] font-black text-cyan-600 uppercase tracking-tight">PolyGen System</span>
+              </div>
+              <img 
+                 src="https://odzvkxzgoibxxybcocbr.supabase.co/storage/v1/object/public/branding/logopks.png" 
+                 alt="PKS Logo" 
+                 className="h-10 w-auto object-contain grayscale opacity-70 hover:grayscale-0 hover:opacity-100 transition-all duration-300"
+                 referrerPolicy="no-referrer"
+              />
+           </div>
+        </footer>
       </main>
     </div>
   );

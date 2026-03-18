@@ -42,6 +42,22 @@ export const Features: React.FC = () => {
             Gain deep insights into assessment quality and student performance. Generate institutional reports for quality assurance audits and continuous quality improvement (CQI).
           </p>
         </div>
+
+        <div className="bg-white p-8 rounded-[32px] border border-slate-200 shadow-sm hover:shadow-md transition">
+          <div className="w-14 h-14 bg-cyan-600 rounded-2xl flex items-center justify-center text-2xl mb-6 text-white shadow-lg shadow-cyan-600/20">🔄</div>
+          <h2 className="text-2xl font-black text-slate-900 mb-4 uppercase tracking-tight">Version Control</h2>
+          <p className="leading-relaxed">
+            Track changes and maintain a complete history of all assessment papers. Revert to previous versions if needed and maintain a clear audit trail of modifications.
+          </p>
+        </div>
+
+        <div className="bg-white p-8 rounded-[32px] border border-slate-200 shadow-sm hover:shadow-md transition">
+          <div className="w-14 h-14 bg-teal-600 rounded-2xl flex items-center justify-center text-2xl mb-6 text-white shadow-lg shadow-teal-600/20">🤝</div>
+          <h2 className="text-2xl font-black text-slate-900 mb-4 uppercase tracking-tight">Collaboration</h2>
+          <p className="leading-relaxed">
+            Multi-user workflows for seamless review and endorsement processes. Assign reviewers, track status, and communicate feedback directly within the platform.
+          </p>
+        </div>
       </div>
     </div>
   );

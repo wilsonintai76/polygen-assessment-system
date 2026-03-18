@@ -509,24 +509,17 @@ function App() {
 
         return (
           <div className="p-10 max-w-7xl mx-auto animate-in fade-in slide-in-from-bottom-6 duration-700">
-            <header className="mb-12 flex justify-between items-end">
-              <div>
-                <h2 className="text-5xl font-black text-slate-900 tracking-tighter uppercase">
-                  Academic Command Hub
-                </h2>
-                <p className="text-slate-500 font-bold uppercase text-[11px] tracking-[0.3em] mt-2 italic border-l-4 border-blue-600 pl-4">
-                  Institutional Quality Control Active
-                </p>
-                {activeSession && (
-                  <div className="mt-4 bg-blue-50 border border-blue-100 px-4 py-1.5 rounded-full inline-flex items-center gap-2">
-                    <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></span>
-                    <span className="text-[10px] font-black text-blue-600 uppercase tracking-widest">
-                      Active Session: {activeSession.name}
-                    </span>
-                  </div>
-                )}
+            {activeSession && (
+              <div className="mb-8 bg-blue-50 border border-blue-100 px-6 py-3 rounded-2xl flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></span>
+                  <span className="text-xs font-black text-blue-600 uppercase tracking-widest">
+                    Active Academic Session: {activeSession.name}
+                  </span>
+                </div>
+                <span className="text-[10px] font-bold text-blue-400 uppercase tracking-widest italic">Institutional Quality Control Active</span>
               </div>
-            </header>
+            )}
 
             {actionItems.length > 0 ? (
               <div className="mb-12">

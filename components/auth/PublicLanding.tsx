@@ -120,9 +120,22 @@ export const PublicLanding: React.FC<PublicLandingProps> = ({ onLogin, showToast
       {/* Navigation */}
       <nav className="fixed w-full z-50 bg-slate-900/80 backdrop-blur-md border-b border-white/5">
         <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-             <img src="https://odzvkxzgoibxxybcocbr.supabase.co/storage/v1/object/public/branding/horizontal%20logo.png" alt="Landing Logo" className="h-10 object-contain" referrerPolicy="no-referrer" />
+          {/* Left: Logo */}
+          <div className="flex items-center">
+             <img 
+                src="https://odzvkxzgoibxxybcocbr.supabase.co/storage/v1/object/public/branding/PolyGen%20Logo.png" 
+                alt="PolyGen Logo" 
+                className="h-12 w-auto object-contain"
+                referrerPolicy="no-referrer"
+             />
           </div>
+
+          {/* Middle: Brand Text */}
+          <div className="hidden lg:flex items-center">
+             <span className="text-sm font-black tracking-[0.3em] text-white uppercase">PolyGen Assessment System</span>
+          </div>
+
+          {/* Right: Links */}
           <div className="hidden md:flex items-center gap-8 text-xs font-bold uppercase tracking-widest text-slate-400">
             <a href="#features" className="hover:text-white transition-colors">Features</a>
             <a href="#security" className="hover:text-white transition-colors">Security</a>
@@ -132,7 +145,7 @@ export const PublicLanding: React.FC<PublicLandingProps> = ({ onLogin, showToast
       </nav>
 
       {/* Hero Section */}
-      <div className="relative pt-24 pb-16 lg:pt-0 lg:h-[calc(100vh-80px)] flex items-center overflow-hidden">
+      <div className="relative pt-24 pb-16 lg:pt-24 lg:min-h-screen flex items-center overflow-hidden">
         {/* Background Effects */}
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full max-w-7xl pointer-events-none">
            <div className="absolute top-20 right-0 w-[800px] h-[800px] bg-cyan-600/20 rounded-full blur-[120px] mix-blend-screen animate-pulse"></div>
@@ -361,7 +374,7 @@ export const PublicLanding: React.FC<PublicLandingProps> = ({ onLogin, showToast
       <div id="features" className="py-24 bg-slate-900 border-t border-white/5 relative">
          <div className="max-w-7xl mx-auto px-6">
             <div className="text-center mb-16">
-               <h2 className="text-3xl font-black text-white uppercase tracking-tight mb-4">System Capabilities</h2>
+               <h2 className="text-3xl font-black text-white uppercase tracking-tight mb-4">Features</h2>
                <p className="text-slate-400 max-w-2xl mx-auto">Designed for the specific needs of Malaysian Polytechnic institutions, ensuring compliance with MQF and Dublin Accord standards.</p>
             </div>
 
@@ -369,7 +382,10 @@ export const PublicLanding: React.FC<PublicLandingProps> = ({ onLogin, showToast
                {[
                  { icon: '🧬', title: 'Smart CIST Mapping', desc: 'Automated constructive alignment between CLOs, PLOs, and assessment items.' },
                  { icon: '🗄️', title: 'Centralized Bank', desc: 'Secure repository for vetted questions with taxonomy level tracking.' },
-                 { icon: '📝', title: 'Auto-Formatting', desc: 'One-click generation of perfectly formatted exam papers and answer schemes.' }
+                 { icon: '📝', title: 'Auto-Formatting', desc: 'One-click generation of perfectly formatted exam papers and answer schemes.' },
+                 { icon: '📊', title: 'Analytics & Reporting', desc: 'Deep insights into assessment quality and student performance for CQI.' },
+                 { icon: '🔄', title: 'Version Control', desc: 'Track changes and maintain a complete history of all assessment papers.' },
+                 { icon: '🤝', title: 'Collaboration', desc: 'Multi-user workflows for seamless review and endorsement processes.' }
                ].map((feature, i) => (
                  <div key={i} className="bg-slate-800/50 border border-white/5 p-8 rounded-3xl hover:bg-slate-800 transition duration-300">
                     <div className="w-12 h-12 bg-slate-700/50 rounded-2xl flex items-center justify-center text-2xl mb-6">{feature.icon}</div>
@@ -381,10 +397,79 @@ export const PublicLanding: React.FC<PublicLandingProps> = ({ onLogin, showToast
          </div>
       </div>
 
+      {/* Security Section */}
+      <div id="security" className="py-24 bg-slate-950 border-t border-white/5 relative overflow-hidden">
+         <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-rose-600/5 rounded-full blur-[100px]"></div>
+         <div className="max-w-7xl mx-auto px-6 relative z-10">
+            <div className="text-center mb-16">
+               <h2 className="text-3xl font-black text-white uppercase tracking-tight mb-4">Security</h2>
+               <p className="text-slate-400 max-w-2xl mx-auto">Built on a zero-trust architecture to protect the integrity of academic assessments.</p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+               {[
+                 { icon: '🛡️', title: 'Identity & Access', desc: 'Strict institutional authentication via Google OAuth for authorized accounts.' },
+                 { icon: '🔒', title: 'Data Encryption', desc: 'AES-256 at rest and TLS 1.3 in transit for maximum data protection.' },
+                 { icon: '👁️', title: 'Audit Logging', desc: 'Complete audit trail of every action, from creation to final endorsement.' }
+               ].map((item, i) => (
+                 <div key={i} className="bg-slate-900/50 border border-white/5 p-8 rounded-3xl">
+                    <div className="w-12 h-12 bg-rose-500/10 rounded-2xl flex items-center justify-center text-2xl mb-6">
+                       <span className="drop-shadow-[0_0_8px_rgba(244,63,94,0.5)]">{item.icon}</span>
+                    </div>
+                    <h3 className="text-xl font-bold text-white mb-3">{item.title}</h3>
+                    <p className="text-slate-400 text-sm leading-relaxed">{item.desc}</p>
+                 </div>
+               ))}
+            </div>
+         </div>
+      </div>
+
+      {/* Compliance Section */}
+      <div id="compliance" className="py-24 bg-slate-900 border-t border-white/5 relative">
+         <div className="max-w-7xl mx-auto px-6">
+            <div className="text-center mb-16">
+               <h2 className="text-3xl font-black text-white uppercase tracking-tight mb-4">Compliance</h2>
+               <p className="text-slate-400 max-w-2xl mx-auto">Ensuring alignment with MQF and Dublin Accord standards through automated verification.</p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+               <div className="bg-slate-800/30 border border-white/5 p-10 rounded-[40px]">
+                  <h3 className="text-2xl font-black text-white mb-6 uppercase tracking-tight">MQF-DA Standards</h3>
+                  <p className="text-slate-400 leading-relaxed mb-8">
+                     The system enforces correct mapping of Learning Domains and Taxonomy levels (Cognitive, Psychomotor, Affective) to every assessment item.
+                  </p>
+                  <div className="space-y-4">
+                     {['Automated CLO-PLO Alignment', 'Taxonomy Level Verification', 'IQA Compliance Tracking'].map((check, i) => (
+                        <div key={i} className="flex items-center gap-3 text-sm font-bold text-slate-300">
+                           <div className="w-5 h-5 rounded-full bg-cyan-500/20 flex items-center justify-center text-[10px] text-cyan-400">✓</div>
+                           {check}
+                        </div>
+                     ))}
+                  </div>
+               </div>
+
+               <div className="bg-slate-800/30 border border-white/5 p-10 rounded-[40px]">
+                  <h3 className="text-2xl font-black text-white mb-6 uppercase tracking-tight">Quality Assurance</h3>
+                  <p className="text-slate-400 leading-relaxed mb-8">
+                     Digitized review and endorsement workflows ensure that every examination paper meets institutional quality benchmarks.
+                  </p>
+                  <div className="space-y-4">
+                     {['Digital Endorsement Signatures', 'Review Checklist Compliance', 'Audit-Ready Reporting'].map((check, i) => (
+                        <div key={i} className="flex items-center gap-3 text-sm font-bold text-slate-300">
+                           <div className="w-5 h-5 rounded-full bg-teal-500/20 flex items-center justify-center text-[10px] text-teal-400">✓</div>
+                           {check}
+                        </div>
+                     ))}
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+
       {/* Footer */}
       <footer className="py-12 border-t border-white/5 text-center flex flex-col items-center gap-4">
          <p className="text-slate-500 text-xs font-bold uppercase tracking-widest">
-            © 2025 PolyGen Enterprise System • Ministry of Higher Education
+            © 2025 PolyGen Assessment System • Politeknik Kuching Sarawak
          </p>
          <div className="flex gap-4 text-xs font-bold text-slate-400 uppercase tracking-widest">
            <a href="/privacy-policy.html" target="_blank" rel="noopener noreferrer" className="hover:text-cyan-400 transition-colors">Privacy Policy</a>

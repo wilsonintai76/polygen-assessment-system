@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { AssessmentTemplate, TemplateSection } from '../../types';
+import { AssessmentTemplate } from '../../types';
 import { api } from '../../services/api';
 import { DEFAULT_TEMPLATE } from '../../constants';
 import { LucideLayout, LucidePlus, LucideTrash2, LucideSave, LucideChevronUp, LucideChevronDown, LucideEye, LucideEyeOff, LucideSettings } from 'lucide-react';
