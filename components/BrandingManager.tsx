@@ -36,7 +36,7 @@ export const BrandingManager: React.FC<BrandingManagerProps> = ({ branding, onUp
     <div className="p-10 max-w-7xl mx-auto animate-in fade-in duration-500">
       <div className="mb-10">
         <h2 className="text-4xl font-black text-slate-900 tracking-tight uppercase">Institutional Branding</h2>
-        <p className="text-slate-500 font-bold uppercase text-[11px] tracking-widest mt-2 border-l-4 border-blue-600 pl-4">Standardize Politeknik Kuching Sarawak identity across all assessment papers</p>
+        <p className="text-slate-500 font-bold uppercase text-[11px] tracking-widest mt-2 border-l-4 border-blue-600 pl-4">Standardize logo and identity across all assessment papers</p>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
@@ -44,20 +44,26 @@ export const BrandingManager: React.FC<BrandingManagerProps> = ({ branding, onUp
           <div className="bg-white p-10 rounded-[40px] shadow-2xl border border-slate-100 ring-1 ring-black/5">
             <div className="flex items-center gap-2 mb-6">
                <span className="w-3 h-3 rounded-full bg-blue-500"></span>
-               <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest">Institution Full Name (Fixed)</label>
+               <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest">Institution Full Name</label>
             </div>
             <input 
-              disabled
-              className="w-full border-2 border-slate-100 bg-slate-100 rounded-2xl p-5 outline-none font-black text-slate-400 text-lg shadow-inner cursor-not-allowed"
+              className="w-full border-2 border-slate-50 bg-slate-50/50 rounded-2xl p-5 outline-none focus:border-blue-400 transition font-black text-slate-700 text-lg shadow-inner"
               value={localInstitutionName}
+              onChange={e => setLocalInstitutionName(e.target.value.toUpperCase())}
               placeholder="e.g. POLITEKNIK MALAYSIA KUCHING SARAWAK"
             />
-            <p className="mt-4 text-[10px] text-slate-400 font-bold italic uppercase tracking-tighter">The institution name is fixed for this deployment as requested.</p>
+            <button 
+              className="mt-4 bg-blue-600 text-white font-bold py-3 px-6 rounded-xl hover:bg-blue-700 transition"
+              onClick={() => onUpdate({ ...branding, institutionName: localInstitutionName })}
+            >
+              Save Changes
+            </button>
+            <p className="mt-4 text-[10px] text-slate-400 font-bold italic uppercase tracking-tighter">This name will appear on the top header of every generated examination paper.</p>
           </div>
           
           <div className="bg-blue-50 p-8 rounded-[32px] border border-blue-100/50">
              <h4 className="text-[11px] font-black text-blue-600 uppercase tracking-widest mb-2">Note on Department Identity</h4>
-             <p className="text-xs text-blue-800 leading-relaxed font-medium">Department names are now managed dynamically via the <span className="font-bold">Department Manager</span> page. When creating a paper, the system automatically pulls the relevant department name based on the Course selection.</p>
+             <p className="text-xs text-blue-800 leading-relaxed font-medium">Department names are now managed dynamically via the <span className="font-bold">Department Registry</span> page. When creating a paper, the system automatically pulls the relevant department name based on the Course selection.</p>
           </div>
         </div>
 

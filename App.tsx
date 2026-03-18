@@ -680,7 +680,6 @@ function App() {
       case "manage-bank":
         return (
           <BankManagement
-            onBack={() => setStep("dashboard")}
             onSave={(q) => api.questions.save(q).then(initData)}
             onBatchAdd={() => {}}
             currentBank={customBank}
@@ -695,7 +694,6 @@ function App() {
       case "library":
         return (
           <LibraryView
-            onBack={() => setStep("dashboard")}
             papers={library}
             onLoad={(p) => {
               setActivePaper(p);

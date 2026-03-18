@@ -3,12 +3,11 @@ import React from 'react';
 import { AssessmentPaper } from '../../types';
 
 interface LibraryViewProps {
-  onBack: () => void;
   papers: AssessmentPaper[];
   onLoad: (paper: AssessmentPaper) => void;
 }
 
-export const LibraryView: React.FC<LibraryViewProps> = ({ onBack, papers, onLoad }) => {
+export const LibraryView: React.FC<LibraryViewProps> = ({ papers, onLoad }) => {
   // Group papers by Course Code
   const grouped = papers.reduce((acc, paper) => {
     const key = paper.header.courseCode || 'Unknown';
@@ -25,7 +24,6 @@ export const LibraryView: React.FC<LibraryViewProps> = ({ onBack, papers, onLoad
             <h2 className="text-3xl font-extrabold text-gray-800">Assessment Library</h2>
             <p className="text-gray-500">View and reload previously generated assessments.</p>
           </div>
-          <button onClick={onBack} className="text-blue-600 font-bold hover:underline">← Back to Dashboard</button>
         </div>
 
         {papers.length === 0 ? (

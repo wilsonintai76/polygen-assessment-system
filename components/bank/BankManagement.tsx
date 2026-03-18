@@ -5,7 +5,6 @@ import { LatexRenderer } from '../common/LatexRenderer';
 import { MarkInputControl } from '../common/MarkInputControl';
 
 interface BankManagementProps {
-  onBack: () => void;
   onSave: (q: Question) => void;
   onBatchAdd: (qs: Question[]) => void;
   currentBank: Question[];
@@ -54,7 +53,7 @@ const SelectField: React.FC<{
   </div>
 );
 
-export const BankManagement: React.FC<BankManagementProps> = ({ onBack, onSave, currentBank, availableCourses, showToast }) => {
+export const BankManagement: React.FC<BankManagementProps> = ({ onSave, currentBank, availableCourses, showToast }) => {
   const [activeTab, setActiveTab] = useState<'identity' | 'question' | 'marking'>('identity');
   const [validationError, setValidationError] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -250,7 +249,6 @@ export const BankManagement: React.FC<BankManagementProps> = ({ onBack, onSave, 
             <h2 className="text-4xl font-black text-slate-900 tracking-tight uppercase">Registry Terminal</h2>
             <p className="text-slate-500 font-bold uppercase text-[10px] tracking-widest mt-1 border-l-4 border-blue-600 pl-4 italic">Topic Shorthand (T1, T2) Sync Active</p>
           </div>
-          <button onClick={onBack} className="bg-white border border-slate-200 px-8 py-3 rounded-2xl text-slate-600 font-black hover:bg-slate-50 transition text-xs uppercase tracking-widest shadow-sm">← Exit Registry</button>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">

@@ -46,11 +46,11 @@ export const DepartmentManager: React.FC<DepartmentManagerProps> = ({ department
       }
       onUpdate();
       setIsModalOpen(false);
-      if (showToast) showToast("Department saved successfully!", "Department Manager");
+      if (showToast) showToast("Department saved successfully!", "Department Registry");
     } catch (err: unknown) {
       console.error("Failed to save department:", err);
       const msg = err instanceof Error ? err.message : 'Unknown error';
-      if (showToast) showToast(`Failed to save department: ${msg}`, "Department Manager");
+      if (showToast) showToast(`Failed to save department: ${msg}`, "Department Registry");
     } finally {
       setLoading(false);
     }
@@ -63,11 +63,11 @@ export const DepartmentManager: React.FC<DepartmentManagerProps> = ({ department
       await api.departments.delete(deletingId);
       onUpdate();
       setDeletingId(null);
-      if (showToast) showToast("Department deleted successfully!", "Department Manager");
+      if (showToast) showToast("Department deleted successfully!", "Department Registry");
     } catch (err: unknown) {
       console.error("Failed to delete department:", err);
       const msg = err instanceof Error ? err.message : 'Unknown error';
-      if (showToast) showToast(`Failed to delete department: ${msg}`, "Department Manager");
+      if (showToast) showToast(`Failed to delete department: ${msg}`, "Department Registry");
     } finally {
       setLoading(false);
     }
@@ -77,7 +77,7 @@ export const DepartmentManager: React.FC<DepartmentManagerProps> = ({ department
     <div className="p-10 max-w-7xl mx-auto animate-in fade-in duration-500">
       <div className="flex justify-between items-end mb-10">
         <div>
-          <h2 className="text-3xl font-black text-slate-900 tracking-tight uppercase">Department Manager</h2>
+          <h2 className="text-3xl font-black text-slate-900 tracking-tight uppercase">Department Registry</h2>
           <p className="text-slate-500 font-bold uppercase text-[11px] tracking-widest mt-1">Define top-level organizational structure</p>
         </div>
         <div className="flex gap-3">

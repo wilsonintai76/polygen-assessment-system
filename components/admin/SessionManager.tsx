@@ -20,9 +20,9 @@ export const SessionManager: React.FC<SessionManagerProps> = ({ sessions, onUpda
       await api.sessions.create(newSessionName.toUpperCase());
       setNewSessionName('');
       await onUpdate();
-      showToast("Session created successfully.", "Session Control");
+      showToast("Session created successfully.", "Session Registry");
     } catch {
-      showToast("Failed to create session.", "Session Control");
+      showToast("Failed to create session.", "Session Registry");
     } finally {
       setLoading(false);
     }
@@ -33,9 +33,9 @@ export const SessionManager: React.FC<SessionManagerProps> = ({ sessions, onUpda
     try {
       await api.sessions.activate(id);
       await onUpdate();
-      showToast("Session activated successfully.", "Session Control");
+      showToast("Session activated successfully.", "Session Registry");
     } catch {
-      showToast("Failed to activate session.", "Session Control");
+      showToast("Failed to activate session.", "Session Registry");
     } finally {
       setLoading(false);
     }
@@ -46,9 +46,9 @@ export const SessionManager: React.FC<SessionManagerProps> = ({ sessions, onUpda
     try {
       await api.sessions.delete(id);
       await onUpdate();
-      showToast("Session deleted successfully.", "Session Control");
+      showToast("Session deleted successfully.", "Session Registry");
     } catch {
-      showToast("Failed to delete session.", "Session Control");
+      showToast("Failed to delete session.", "Session Registry");
     } finally {
       setLoading(false);
     }
@@ -57,7 +57,7 @@ export const SessionManager: React.FC<SessionManagerProps> = ({ sessions, onUpda
   return (
     <div className="p-10 max-w-7xl mx-auto animate-in fade-in duration-500">
       <header className="mb-12">
-        <h2 className="text-4xl font-black text-slate-900 tracking-tight uppercase">Session Control</h2>
+        <h2 className="text-4xl font-black text-slate-900 tracking-tight uppercase">Session Registry</h2>
         <p className="text-slate-500 font-bold uppercase text-[11px] tracking-widest mt-2">Manage institutional academic periods and active assessment cycles</p>
       </header>
 

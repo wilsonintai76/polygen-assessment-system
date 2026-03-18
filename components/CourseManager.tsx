@@ -72,7 +72,7 @@ export const CourseManager: React.FC<CourseManagerProps> = ({
     <div className="p-10 max-w-7xl mx-auto animate-in fade-in duration-500">
       <div className="flex justify-between items-end mb-12">
         <div>
-          <h2 className="text-4xl font-black text-slate-900 tracking-tight uppercase">Course Repository</h2>
+          <h2 className="text-4xl font-black text-slate-900 tracking-tight uppercase">Course Registry</h2>
           <p className="text-[#94a3b8] font-bold uppercase text-[11px] tracking-widest mt-2">Manage Hierarchy: Department &rarr; Programme &rarr; Course</p>
         </div>
         {canCreate && (

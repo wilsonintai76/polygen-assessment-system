@@ -44,15 +44,15 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children, acti
     {
       label: 'INSTITUTIONAL HIERARCHY',
       items: [
-        { id: 'departments', label: 'Department Manager', icon: '🏢', allowedRoles: ['Administrator'] },
-        { id: 'programmes', label: 'Programme Registry', icon: '🎓', allowedRoles: ['Administrator'] },
-        { id: 'courses', label: 'Course Catalog', icon: '📚', allowedRoles: ['Administrator', 'Reviewer'] },
+        { id: 'departments', label: 'Department', icon: '🏢', allowedRoles: ['Administrator'] },
+        { id: 'programmes', label: 'Programme', icon: '🎓', allowedRoles: ['Administrator'] },
+        { id: 'courses', label: 'Course', icon: '📚', allowedRoles: ['Administrator', 'Reviewer'] },
       ]
     },
     {
       label: 'ACADEMIC STANDARDS',
       items: [
-        { id: 'sessions', label: 'Session Control', icon: '⏳', allowedRoles: ['Administrator'] },
+        { id: 'sessions', label: 'Session', icon: '⏳', allowedRoles: ['Administrator'] },
         { id: 'manage-templates', label: 'Assessment Templates', icon: '🎨', allowedRoles: ['Administrator'] },
         { id: 'global-mqf', label: 'Global MQF/DA', icon: '🧬', allowedRoles: ['Administrator'] },
         { id: 'branding', label: 'Institution Identity', icon: '⚙️', allowedRoles: ['Administrator'] },
@@ -75,148 +75,137 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children, acti
   ];
 
   return (
-    <div className="min-h-screen bg-[#f8fafc] flex font-sans">
-      {/* Enterprise Sidebar */}
-      <aside className="w-72 bg-[#0f172a] text-white flex flex-col shrink-0 border-r border-slate-800 shadow-2xl z-50 print:hidden">
-        
-        {/* Brand Identity */}
-        <div className="p-8 border-b border-slate-800/50">
-          <div className="flex flex-col gap-3">
-             <div className="bg-white/5 p-4 rounded-2xl border border-white/10 flex items-center justify-center">
-                <img 
-                   src="https://odzvkxzgoibxxybcocbr.supabase.co/storage/v1/object/public/branding/PolyGen%20Logo.png" 
-                   alt="PolyGen Logo" 
-                   className="h-12 w-auto object-contain"
-                   referrerPolicy="no-referrer"
-                />
-             </div>
-             <div className={`mt-2 flex items-center gap-1.5 px-2 py-0.5 rounded-full w-fit ${api.isSupabaseConfigured ? 'bg-emerald-500/10 text-emerald-400' : 'bg-amber-500/10 text-amber-400'}`}>
-               <div className={`w-1.5 h-1.5 rounded-full ${api.isSupabaseConfigured ? 'bg-emerald-400 animate-pulse' : 'bg-amber-400'}`}></div>
-               <span className="text-[8px] font-bold uppercase tracking-wider">{api.isSupabaseConfigured ? 'Cloud Connected' : 'Local Mode'}</span>
-             </div>
-          </div>
-        </div>
+    <div className="h-screen flex flex-col bg-[#f8fafc] font-sans overflow-hidden">
+      {/* 1. Full-Width Fixed Header */}
+      <header className="bg-white border-b border-slate-200 flex items-center justify-between shrink-0 z-[60] print:hidden shadow-sm h-16">
+         {/* Column 1: Brand Identity - Width matched to Sidebar (w-72) */}
+         <div className="w-72 h-full flex items-center px-8 bg-[#0f172a] shrink-0 border-r border-slate-800">
+            <img 
+               src="https://odzvkxzgoibxxybcocbr.supabase.co/storage/v1/object/public/branding/PolyGen%20Logo.png" 
+               alt="PolyGen Logo" 
+               className="h-7 w-auto object-contain"
+               referrerPolicy="no-referrer"
+            />
+         </div>
 
-        {/* Staff Identity Card */}
-        <div className="px-6 py-6">
-          <button 
-            onClick={onOpenProfile}
-            className="w-full bg-slate-800/40 rounded-3xl p-4 border border-slate-700/50 flex items-center gap-4 hover:bg-slate-700/50 transition-colors text-left"
-          >
-             <div className={`w-12 h-12 rounded-2xl flex items-center justify-center text-xl font-bold border border-slate-600 shrink-0 ${
-               user?.role === 'Administrator' ? 'bg-rose-500/20 text-rose-400' : 
-               user?.role === 'Reviewer' ? 'bg-purple-500/20 text-purple-400' :
-               user?.role === 'Endorser' ? 'bg-emerald-500/20 text-emerald-400' :
-               'bg-blue-500/20 text-blue-400'
-             }`}>
-               {user?.full_name?.charAt(0) || 'U'}
-             </div>
-             <div className="overflow-hidden">
-                <p className="text-xs font-black truncate text-white uppercase tracking-tight">{user?.full_name || 'Academic Staff'}</p>
-                <p className="text-[9px] font-black text-slate-500 uppercase tracking-widest mt-0.5">{user?.role || 'Creator'}</p>
-             </div>
-          </button>
-        </div>
+         {/* Column 2: Page Label Section (Left Indent) */}
+         <div className="flex-grow flex items-center justify-start gap-4 px-10">
+            <div className="w-8 h-8 rounded-lg bg-blue-600/10 flex items-center justify-center text-base">
+               {groups.flatMap(g => g.items).find(i => i.id === activeStep)?.icon || '🏛️'}
+            </div>
+            <div>
+               <h2 className="text-[13px] font-black text-slate-900 uppercase tracking-tight leading-none">
+                  {groups.flatMap(g => g.items).find(i => i.id === activeStep)?.label || 'Command Hub'}
+               </h2>
+               <p className="text-[8px] font-bold text-slate-400 uppercase tracking-widest mt-0.5">
+                  {groups.find(g => g.items.some(i => i.id === activeStep))?.label || 'Academic Workspace'}
+               </p>
+            </div>
+         </div>
+         
+         {/* Column 3: Profile Section - Width matched to Sidebar (w-72) for symmetry */}
+         <div className="w-72 flex items-center justify-end gap-6 px-8 h-full">
+            <button 
+               onClick={onOpenProfile}
+               className="flex items-center gap-4 px-3 py-1.5 rounded-2xl hover:bg-slate-50 transition-colors text-left group"
+            >
+               <div className="text-right hidden sm:block">
+                  <p className="text-[10px] font-black text-slate-900 uppercase tracking-tight group-hover:text-blue-600 transition-colors">{user?.full_name || 'Academic Staff'}</p>
+                  <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest">{user?.role || 'Creator'}</p>
+               </div>
+               <div className={`w-9 h-9 rounded-xl flex items-center justify-center text-sm font-bold border border-slate-200 shrink-0 shadow-sm ${
+                  user?.role === 'Administrator' ? 'bg-rose-500/10 text-rose-500' : 
+                  user?.role === 'Reviewer' ? 'bg-purple-500/10 text-purple-500' :
+                  user?.role === 'Endorser' ? 'bg-emerald-500/10 text-emerald-500' :
+                  'bg-blue-500/10 text-blue-500'
+               }`}>
+                  {user?.full_name?.charAt(0) || 'U'}
+               </div>
+            </button>
+         </div>
+      </header>
 
-        {/* Dynamic Navigation */}
-        <nav className="flex-grow overflow-y-auto px-4 space-y-8 custom-scrollbar pb-10">
-          {groups.map((group, idx) => {
-            const visibleItems = group.items.filter(item => !item.allowedRoles || (user?.role && item.allowedRoles.includes(user.role)));
-            if (visibleItems.length === 0) return null;
+      {/* 2. Middle Section (Sidebar + Content) */}
+      <div className="flex flex-grow overflow-hidden">
+        {/* Enterprise Sidebar */}
+        <aside className="w-72 bg-[#0f172a] text-white flex flex-col shrink-0 border-r border-slate-800 z-50 print:hidden">
+          {/* Dynamic Navigation */}
+          <nav className="flex-grow overflow-y-auto px-4 space-y-8 custom-scrollbar py-8">
+            {groups.map((group, idx) => {
+              const visibleItems = group.items.filter(item => !item.allowedRoles || (user?.role && item.allowedRoles.includes(user.role)));
+              if (visibleItems.length === 0) return null;
 
-            return (
-              <div key={idx} className="space-y-2">
-                <h3 className="px-4 text-[9px] font-black text-slate-500 uppercase tracking-[0.25em] mb-3">{group.label}</h3>
-                <div className="space-y-1">
-                  {visibleItems.map((item) => (
-                    <button
-                      key={item.id}
-                      onClick={() => onNavigate(item.id)}
-                      className={`w-full flex items-center gap-3 px-4 py-3.5 rounded-2xl transition-all duration-300 text-[13px] font-bold ${
-                        activeStep === item.id || (item.id === 'setup' && ['setup', 'cist', 'preview'].includes(activeStep))
-                          ? 'bg-blue-600 text-white shadow-xl shadow-blue-600/20 translate-x-1' 
-                          : 'text-slate-400 hover:bg-slate-800/50 hover:text-white'
-                      }`}
-                    >
-                      <span className="text-lg opacity-80">{item.icon}</span>
-                      {item.label}
-                    </button>
-                  ))}
+              return (
+                <div key={idx} className="space-y-2">
+                  <h3 className="px-4 text-[9px] font-black text-slate-500 uppercase tracking-[0.25em] mb-3">{group.label}</h3>
+                  <div className="space-y-1">
+                    {visibleItems.map((item) => (
+                      <button
+                        key={item.id}
+                        onClick={() => onNavigate(item.id)}
+                        className={`w-full flex items-center gap-3 px-4 py-3 rounded-2xl transition-all duration-300 text-[12px] font-bold ${
+                          activeStep === item.id || (item.id === 'setup' && ['setup', 'cist', 'preview'].includes(activeStep))
+                            ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/20 translate-x-1' 
+                            : 'text-slate-400 hover:bg-slate-800/50 hover:text-white'
+                        }`}
+                      >
+                        <span className="text-base opacity-80">{item.icon}</span>
+                        {item.label}
+                      </button>
+                    ))}
+                  </div>
                 </div>
-              </div>
-            );
-          })}
-        </nav>
+              );
+            })}
+          </nav>
 
-        {/* System Exit */}
-        <div className="p-6 mt-auto border-t border-slate-800/50 bg-slate-900/30">
-          <button 
-             onClick={onLogout}
-             className="w-full flex items-center justify-center gap-3 py-4 rounded-2xl text-slate-500 hover:text-rose-400 hover:bg-rose-50/10 transition-all font-black uppercase text-[10px] tracking-widest"
-          >
-             Sign Out Session
-          </button>
-        </div>
-      </aside>
+          {/* System Exit */}
+          <div className="p-6 mt-auto border-t border-slate-800/50 bg-slate-900/30">
+            <button 
+               onClick={onLogout}
+               className="w-full flex items-center justify-center gap-3 py-3 rounded-2xl text-slate-500 hover:text-rose-400 hover:bg-rose-50/10 transition-all font-black uppercase text-[9px] tracking-widest"
+            >
+               Sign Out Session
+            </button>
+          </div>
+        </aside>
 
-      {/* Main Content Area */}
-      <main className="flex-grow bg-slate-50 h-screen relative flex flex-col overflow-hidden">
-        {/* Dashboard Header */}
-        <header className="px-8 py-4 bg-white border-b border-slate-200 flex items-center justify-between shrink-0 print:hidden">
-           <div className="flex items-center gap-4">
-              <div className="w-10 h-10 rounded-xl bg-blue-600/10 flex items-center justify-center text-xl">
-                 {groups.flatMap(g => g.items).find(i => i.id === activeStep)?.icon || '🏛️'}
-              </div>
-              <div>
-                 <h2 className="text-sm font-black text-slate-900 uppercase tracking-tight">
-                    {groups.flatMap(g => g.items).find(i => i.id === activeStep)?.label || 'Command Hub'}
-                 </h2>
-                 <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
-                    {groups.find(g => g.items.some(i => i.id === activeStep))?.label || 'Academic Workspace'}
-                 </p>
-              </div>
-           </div>
-           
-           <div className="flex items-center gap-6">
-              <div className="text-right hidden sm:block">
-                 <p className="text-[10px] font-black text-slate-900 uppercase tracking-tight">{user?.full_name || 'Academic Staff'}</p>
-                 <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest">{user?.role || 'Creator'}</p>
-              </div>
-              <div className="h-8 w-[1px] bg-slate-200 hidden sm:block"></div>
-              <div className="flex items-center gap-3">
-                 <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest hidden md:block">System Status</span>
-                 <div className="flex items-center gap-1.5 px-2 py-1 bg-emerald-500/10 text-emerald-600 rounded-full">
-                    <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></div>
-                    <span className="text-[8px] font-black uppercase tracking-wider">Operational</span>
-                 </div>
-              </div>
-           </div>
-        </header>
+        {/* Main Content Area */}
+        <main className="flex-grow bg-slate-50 relative flex flex-col overflow-hidden">
+          <div className="flex-grow overflow-y-auto custom-scrollbar">
+            {children}
+          </div>
+        </main>
+      </div>
 
-        <div className="flex-grow overflow-y-auto custom-scrollbar">
-          {children}
-        </div>
-        
-        {/* Dashboard Footer */}
-        <footer className="px-8 py-6 bg-white border-t border-slate-200 flex items-center justify-between shrink-0 print:hidden">
-           <div className="flex flex-col">
-              <span className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Institution</span>
-              <span className="text-sm font-bold text-slate-700">POLITEKNIK KUCHING SARAWAK</span>
-           </div>
-           <div className="flex items-center gap-4">
-              <div className="text-right flex flex-col">
-                 <span className="text-[8px] font-bold text-slate-400 uppercase tracking-widest">Powered by</span>
-                 <span className="text-[10px] font-black text-cyan-600 uppercase tracking-tight">PolyGen System</span>
-              </div>
-              <img 
-                 src="https://odzvkxzgoibxxybcocbr.supabase.co/storage/v1/object/public/branding/logopks.png" 
-                 alt="PKS Logo" 
-                 className="h-10 w-auto object-contain grayscale opacity-70 hover:grayscale-0 hover:opacity-100 transition-all duration-300"
-                 referrerPolicy="no-referrer"
-              />
-           </div>
-        </footer>
-      </main>
+      {/* 3. Full-Width Fixed Footer */}
+      <footer className="bg-white border-t border-slate-200 flex items-center justify-between shrink-0 z-[60] print:hidden shadow-[0_-1px_3px_rgba(0,0,0,0.05)] h-14">
+         {/* Left Status Section - Matches Sidebar Width with Divider */}
+         <div className="w-72 h-full hidden md:flex flex-col items-center justify-center gap-1.5 bg-[#0f172a] border-r border-slate-800 shrink-0 px-8">
+            <span className="text-[7px] font-black text-slate-500 uppercase tracking-[0.3em] mb-0.5">System Status</span>
+            <div className="flex items-center gap-2">
+               <div className={`flex items-center gap-1 px-1.5 py-0.5 rounded-full border ${api.isSupabaseConfigured ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20' : 'bg-amber-500/10 text-amber-400 border-amber-500/20'}`}>
+                  <div className={`w-1 h-1 rounded-full ${api.isSupabaseConfigured ? 'bg-emerald-400 animate-pulse' : 'bg-amber-400'}`}></div>
+                  <span className="text-[6px] font-black uppercase tracking-wider">{api.isSupabaseConfigured ? 'Cloud' : 'Local'}</span>
+               </div>
+               <div className="flex items-center gap-1 px-1.5 py-0.5 bg-emerald-500/10 text-emerald-400 rounded-full border border-emerald-500/20">
+                  <div className="w-1 h-1 rounded-full bg-emerald-400 animate-pulse"></div>
+                  <span className="text-[6px] font-black uppercase tracking-wider">Operational</span>
+               </div>
+            </div>
+         </div>
+
+         {/* Right Branding Section - Centered in remaining space */}
+         <div className="flex-grow flex items-center justify-center gap-4 px-4">
+            <img 
+               src="https://odzvkxzgoibxxybcocbr.supabase.co/storage/v1/object/public/branding/logopks.png" 
+               alt="PKS Logo" 
+               className="h-8 w-auto object-contain"
+               referrerPolicy="no-referrer"
+            />
+            <span className="text-[11px] font-black text-slate-700 uppercase tracking-tight">POLITEKNIK KUCHING SARAWAK</span>
+         </div>
+      </footer>
     </div>
   );
 };
